@@ -35,6 +35,7 @@ public class GUI {
 	private static JButton fpCustomerButton;
 	private static JButton backToMainPanelButton;
 	private static JButton checkoutButton;
+	private static JButton FPcheckoutButton;
 	
 	// Tables
 	private static JTable productTable;
@@ -63,6 +64,7 @@ public class GUI {
 	private static Thread SRTask = new Thread(new FPTasks.SpeakerRecognitionTask());
 	private static Thread FRTask = new Thread(new FPTasks.FaceRecognitionTask());
 	private static Thread MTask = new Thread(new FPTasks.MotionRecognitionTask());
+	private static Thread PayTask;
 
 	private static ArrayList<Object[]> prodData;
 	
@@ -101,7 +103,7 @@ public class GUI {
 		
 		///// Buttons ////////////////////////////////////////////////
 		// New Customer Button
-		newCustomerButton = new JButton("New Customer");
+		newCustomerButton = new JButton("Normal Customer");
 		newCustomerButton.setBounds(766, 476,389, 93);
 		newCustomerButton.setFont(new Font("Arial", Font.PLAIN, 40));
 		newCustomerButton.addActionListener(new ActionListener() {
@@ -144,17 +146,38 @@ public class GUI {
 
         });
 		
-		// Checkout with FoicePal
-		checkoutButton = new JButton("FoicePal Checkout");
-		checkoutButton.setBounds(1467, 993,389, 93);
+		// Normal Checkout
+		checkoutButton = new JButton("Normal Checkout");
+		checkoutButton.setBounds(1467, 983,389, 93);
 		//checkoutButton.setBounds(100, 93,389, 93);
 		checkoutButton.setFont(new Font("Arial", Font.PLAIN, 40));
 		checkoutButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-            	//new PaymentHandler().sendPayment(customer_name, customer_data, prodData);
-            	new PaymentHandler().sendPayment("Andrey Boss", "email@gmail.cum,23932932932", prodData);
+            	//
+            }
+
+        });
+		
+		// Checkout with FoicePal
+		FPcheckoutButton = new JButton("FoicePal Checkout");
+		checkoutButton.setBounds(1467, 1086,389, 93);
+		//FPcheckoutButton.setBounds(100, 208,389, 93);
+		FPcheckoutButton.setFont(new Font("Arial", Font.PLAIN, 40));
+		FPcheckoutButton.setVisible(false);
+		FPcheckoutButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	if(isFPCustomer)
+            	{
+            		PayTask = new Thread(new FPTasks.PaymentTask());
+                	PayTask.start();
+            	}
+            	else
+            		if(Config.DEBUG)
+            			System.out.println("Payment: This should never happen.");
             }
 
         });
@@ -198,6 +221,7 @@ public class GUI {
 		shoppingPanel.add(productTableScrollPane);
 		shoppingPanel.add(backToMainPanelButton);
 		shoppingPanel.add(checkoutButton);
+		shoppingPanel.add(FPcheckoutButton);
 		
 		// Adding components to main window
 		mainFrame.add(mainPanel);
@@ -263,6 +287,7 @@ public class GUI {
 	
 	protected static void showFPCustomerButton(boolean b){
 		fpCustomerButton.setVisible(b);
+		
 	}
 	
 	protected static void setVoiceRecognized(String customer_email){
@@ -359,14 +384,30 @@ public class GUI {
 	
 	private static void customerRecognized(){
 		showFPCustomerButton(true);
-
+		isFPCustomer = true;
 		Tools.speakText("Hey: " + customer_name + ". Welcome back!");
 	}
 	
 	private static void toggleShoppingPanel(){
 		shoppingPanel.setVisible(!shoppingPanel.isVisible());
 		mainPanel.setVisible(!mainPanel.isVisible());
+
+    	FPcheckoutButton.setVisible(isFPCustomer);
 	}
 	
-
+	protected static String getCustomerName(){
+		//return customer_name;
+		
+		return "Andrey Boss";
+	}
+	
+	protected static String getCustomerData(){
+		//return customer_data;
+		
+		return "email@gmail.cum,23932932932";
+	}
+	
+	protected static ArrayList<Object[]> getProdData(){
+		return prodData;
+	}
 }

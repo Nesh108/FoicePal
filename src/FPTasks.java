@@ -45,4 +45,12 @@ public class FPTasks {
 	     }
 	}
 	
+	protected static class PaymentTask implements Runnable {
+	     public void run() {
+	         // do stuff here
+	    	 System.out.println("Started Payment");
+	    	 new PaymentHandler().sendPayment(GUI.getCustomerName(),GUI.getCustomerData(), GUI.getProdData());
+	     }
+	}
+	
 }
