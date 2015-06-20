@@ -24,6 +24,10 @@ public class GUI {
 	private static JButton newCustomerButton;
 	private static JButton fpCustomerButton;
 	
+	// TODO: implement voice
+	private static boolean isVoiceRecognized = true;
+	private static boolean isFaceRecognized = false;
+	
 	public GUI(){
 		// Main Frame
 		mainFrame = new JFrame();
@@ -70,6 +74,7 @@ public class GUI {
 		fpCustomerButton = new JButton("FoicePal Customer");
 		fpCustomerButton.setBounds(766, 602,389, 93);
 		fpCustomerButton.setFont(new Font("Arial", Font.PLAIN, 40));
+		fpCustomerButton.setVisible(false);
 		fpCustomerButton.addActionListener(new ActionListener() {
 
             @Override
@@ -97,6 +102,30 @@ public class GUI {
 	protected static void toggleCoverPanel(){
 		coverPanel.setVisible(!coverPanel.isVisible());
 		mainPanel.setVisible(!mainPanel.isVisible());
+	}
+	
+	protected static void showFPCustomerButton(boolean b){
+		fpCustomerButton.setVisible(b);
+	}
+	
+	protected static void setVoiceRecognized(){
+		isVoiceRecognized = true;
+		
+		if(isFaceRecognized)
+			showFPCustomerButton(true);
+	}
+	
+	protected static void setFaceRecognized(){
+		isFaceRecognized = true;
+
+		if(isVoiceRecognized)
+			showFPCustomerButton(true);
+	}
+	
+	protected static void clearGUI(){
+		isVoiceRecognized = false;
+		isFaceRecognized = false;
+		showFPCustomerButton(false);
 	}
 
 }

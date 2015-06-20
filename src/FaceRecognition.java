@@ -51,7 +51,8 @@ public class FaceRecognition {
 		{
 			if(Config.DEBUG)
 				System.out.println("Found face: " + customer_data[0] + " and email: " + Tools.convertTagIntoEmail(customer_data[1]));
-			
+
+			GUI.setFaceRecognized();
 			Tools.speakText("Hey: " + customer_data[0] + ". Welcome back!");
 		}
 		else if(person_found && customer_data.length != 2)
