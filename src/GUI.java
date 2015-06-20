@@ -54,7 +54,7 @@ public class GUI {
 	private static boolean isVoiceRecognized = true;
 	private static boolean isFaceRecognized = false;
 	
-	private static String customer_email = null;
+	private static String customer_data = null;
 	private static String customer_name = null;
 	
 	private static boolean isFPCustomer = false;
@@ -262,9 +262,9 @@ public class GUI {
 			return;
 		}
 		
-		if(GUI.customer_email == null)
-			GUI.customer_email = customer_email;
-		else if(!GUI.customer_email.equals(customer_email))
+		if(GUI.customer_data == null)
+			GUI.customer_data = customer_email;
+		else if(!GUI.customer_data.equals(customer_email))
 			{
 				faceRecognitionIconLabel.setIcon(redIcon);
 				voiceRecognitionIconLabel.setIcon(redIcon);
@@ -291,9 +291,9 @@ public class GUI {
 			return;
 		}
 		
-		if(GUI.customer_email == null)
-			GUI.customer_email = customer_email;
-		else if(!GUI.customer_email.equals(customer_email))
+		if(GUI.customer_data == null)
+			GUI.customer_data = customer_email;
+		else if(!GUI.customer_data.equals(customer_email))
 			{
 				faceRecognitionIconLabel.setIcon(redIcon);
 				voiceRecognitionIconLabel.setIcon(redIcon);

@@ -27,7 +27,7 @@ public class FaceRecognition {
 	private int PHOTOS_PER_SET = 20;
 	private int ATTEMPTS = 10;
 	
-	private String[] customer_data;	// {name, email}
+	private String[] customer_data;	// {<name surname>, <email,phone>}
 	
 	public FaceRecognition() throws InterruptedException, FaceppParseException, JSONException, IOException {
 		
@@ -97,7 +97,7 @@ public class FaceRecognition {
 				
 				ImageFetcher.openCamera();
 				
-				createPersonSet("Hasan Dude", "h_email[at]gmail.com", test_group);
+				createPersonSet("Hasan Dude", "h_email[at]gmail.com,+49123456789", test_group);
 				
 				ImageFetcher.closeCamera();
 				System.exit(0);
