@@ -110,37 +110,6 @@ public class FaceRecognition {
 		}
 	}
 	
-	public void test() throws InterruptedException, FaceppParseException, JSONException {
-		 
-		try {
-			
-			// Detect Motion
-		/*	new MotionDetector();
-
-			waitMotion();
-			
-			if(Config.DEBUG)
-				System.out.println("Detected");*/
-			
-			ImageFetcher.openCamera();
-			//sendRequest();
-			//addNewPerson("Arnold Swarz2", URL_ARNOLD, "Arnold2[at]gmail.com", "Famous People");
-			
-			//createPersonSet("Test_Person#0", "person1_email[at]gmail.com", test_group);
-			trainDetector(test_group);
-			
-			while(!person_found)
-				detectPerson(ImageFetcher.fetchImage(),test_group);
-			
-			ImageFetcher.closeCamera();
-			
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 	protected void createPersonSet(String person_name, String person_email, String group) throws FaceppParseException, JSONException, IOException, InterruptedException{
 		
 		if(Config.DEBUG)

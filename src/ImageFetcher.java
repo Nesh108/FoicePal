@@ -30,11 +30,11 @@ public class ImageFetcher {
 	protected static BufferedImage fetchImage() throws IOException, InterruptedException{
 		
 		if(!isCameraOn)
-			return null;
+			openCamera();
 
+		// To not overload the camera
 		Thread.sleep(100);
-		BufferedImage img = webcam.getImage();
 
-		return img;
+		return webcam.getImage();
 	}
 }

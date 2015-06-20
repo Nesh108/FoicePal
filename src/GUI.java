@@ -2,10 +2,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -67,7 +65,8 @@ public class GUI {
 	private static Thread PayTask;
 	private static Thread ScannerTask;
 
-	private static ArrayList<Object[]> prodData;
+	private static ArrayList<Object[]> shoppingChart = new ArrayList<Object[]>();
+	private static ArrayList<Object[]> productsList;
 	
 	public GUI(){
 		// Main Frame
@@ -142,6 +141,7 @@ public class GUI {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+            	shoppingChart.clear();
             	clearGUI(false);
             }
 
@@ -156,7 +156,7 @@ public class GUI {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-            	//
+            	Config.runScanner = false;
             }
 
         });
@@ -173,6 +173,7 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
             	if(isFPCustomer)
             	{
+            		Config.runScanner = false;
             		PayTask = new Thread(new FPTasks.PaymentTask());
                 	PayTask.start();
             	}
@@ -184,21 +185,8 @@ public class GUI {
         });
 		///// Tables ////////////////////////////////////////////////
 		// Product table
-		
-		
-		ImageIcon image;
-		try {
-			setupProductTable();
-			image = new ImageIcon(Tools.getScaledImage(ImageIO.read(getClass().getResource("/res/mouse.jpg")), 200, 200));
-			prodData = new ArrayList<Object[]>();
-			addProdToTable(new Object[]{"1010101",image,"Mouse", "20.00", "EUR"});
-			addProdToTable(new Object[]{"1234",image,"Animal", "40.00", "EUR"});
-			
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
+		productsList = new ProductLoader().getProductList();
+		setupProductTable();		
 		
 		///// Labels ////////////////////////////////////////////////
 		// Recognition Icon Labels
@@ -273,9 +261,22 @@ public class GUI {
 		productTableScrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1, true));
 	}
 	
-	protected static void addProdToTable(Object[] prod){
+	protected static void addProd(String code){
+		for(int i = 0; i < productsList.size(); i++)
+		{
+			if(productsList.get(i)[0].equals(code))
+			{
+				addToShoppingChart(productsList.get(i));
+				System.out.println("FOUND ITEM");
+				break;
+			}
+		}
 		
-		prodData.add(prod);
+	}
+	
+	protected static void addToShoppingChart(Object[] prod){
+		
+		shoppingChart.add(prod);
 		productTableModel.addRow(prod);
 	}
 	/**
@@ -397,7 +398,9 @@ public class GUI {
     	
     	if(shoppingPanel.isVisible())
     	{
+    		Config.runScanner = true;
     		ScannerTask = new Thread(new FPTasks.ProductScannerTask());
+    		ScannerTask.start();
     	}
 	}
 	
@@ -413,7 +416,7 @@ public class GUI {
 		return "email@gmail.cum,23932932932";
 	}
 	
-	protected static ArrayList<Object[]> getProdData(){
-		return prodData;
+	protected static ArrayList<Object[]> getShoppingChart(){
+		return shoppingChart;
 	}
 }

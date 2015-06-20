@@ -60,7 +60,7 @@ public class FPTasks {
 	     public void run() {
 	         // do stuff here
 	    	 System.out.println("Started Payment");
-	    	 if(new PaymentHandler().sendPayment(GUI.getCustomerName(),GUI.getCustomerData(), GUI.getProdData()))
+	    	 if(new PaymentHandler().sendPayment(GUI.getCustomerName(),GUI.getCustomerData(), GUI.getShoppingChart()))
 	    		 System.out.println("Payment received!");
 	    	 else
 	    		 System.out.println("Payment rejected :(!");
