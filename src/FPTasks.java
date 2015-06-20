@@ -67,4 +67,12 @@ public class FPTasks {
 	     }
 	}
 	
+	protected static class ProductScannerTask implements Runnable {
+	     public void run() {
+	         // do stuff here
+	    	 System.out.println("Started Product Scanner");
+	    	 new ProductScanner();
+	     }
+	}
+	
 }
