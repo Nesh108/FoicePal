@@ -130,7 +130,7 @@ public class GUI {
 		};
 		
 		productTable = new JTable(productTableModel);
-		productTable.setBounds(0, 0, 685, 886);
+		productTable.setBounds(0, 0, 1144, 886);
 		productTable.setFont(new Font("Arial", Font.PLAIN, 40));
 		productTable.getTableHeader().setFont(new Font("Arial", Font.PLAIN, 40));
 		productTable.setRowHeight(200);
@@ -141,7 +141,7 @@ public class GUI {
 		productTable.getColumnModel().getColumn(4).setPreferredWidth(200);
 		
 		productTableScrollPane = new JScrollPane(productTable);
-		productTableScrollPane.setBounds(712, 92, 685, 886);
+		productTableScrollPane.setBounds(712, 92, 1144, 886);
 		productTableScrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1, true));
 		
 		ImageIcon image;
