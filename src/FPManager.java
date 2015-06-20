@@ -4,6 +4,9 @@ public class FPManager {
 	
 	public static void main(String[] args){
 		
+		Thread MTask;
+		Thread GUITask;
+		
 		class MotionRecognitionTask implements Runnable {
 		     public void run() {
 		         // do stuff here
@@ -21,16 +24,14 @@ public class FPManager {
 		     }
 		}
 		
-		Thread MTask = new Thread(new MotionRecognitionTask());
-		Thread GUITask = new Thread(new GUITask());
+		MTask = new Thread(new MotionRecognitionTask());
+		GUITask = new Thread(new GUITask());
 
-		GUITask.start();
 		MTask.start();
-	}
-	
-	protected void doStuff(){
+		GUITask.start();
 		
 	}
+	
 	
 	
 	

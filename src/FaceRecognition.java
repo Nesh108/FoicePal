@@ -37,7 +37,7 @@ public class FaceRecognition {
 		else
 			trainDetector(main_group);
 		
-		while(!person_found && ATTEMPTS > 0){
+		while(!person_found && ATTEMPTS > 0  && Config.runRecognition){
 			if(Config.DEBUG)
 				customer_data = detectPerson(ImageFetcher.fetchImage(),test_group);
 			else
@@ -45,15 +45,16 @@ public class FaceRecognition {
 			
 			ATTEMPTS--;
 		}
+		if(!Config.runRecognition)
+			System.out.println("Recognition stopped by the user");
 
 		// Person Found
-		if(person_found && customer_data.length == 2)
+		if(person_found && customer_data.length == 2 && Config.runRecognition)
 		{
 			if(Config.DEBUG)
 				System.out.println("Found face: " + customer_data[0] + " and email: " + Tools.convertTagIntoEmail(customer_data[1]));
 
-			GUI.setFaceRecognized();
-			Tools.speakText("Hey: " + customer_data[0] + ". Welcome back!");
+			GUI.setFaceRecognized(customer_data[0], customer_data[1]);
 		}
 		else if(person_found && customer_data.length != 2)
 			new Throwable("This is not supposed to ever happen!");
@@ -274,13 +275,26 @@ public class FaceRecognition {
 		//recognition/recognize
 		if(Config.DEBUG)
 			System.out.println("\nrecognition/recognize");
+		
+		// Checks if user continued to the next window
+		if(!Config.runRecognition)
+			return new String[]{};
+		
 		JSONObject result = httpRequests.recognitionIdentify(new PostParameters().setGroupName(group_name).setImg(Tools.getByteFromBufferedImage(img_face)).setSessionId(session_id));
+		
+		// Checks if user continued to the next window
+		if(!Config.runRecognition)
+			return new String[]{};
 		
 		if(Config.DEBUG)
 			System.out.println(result);
 
 		for(int i = 0;  i < result.getJSONArray("face").length(); i++)
 		{
+			// Checks if user continued to the next window
+			if(!Config.runRecognition)
+				return new String[]{};
+			
 			JSONObject person = result.getJSONArray("face").getJSONObject(0).getJSONArray("candidate").getJSONObject(i);
 			if(person.getDouble("confidence") >= confidence_min)
 			{
