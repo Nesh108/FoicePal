@@ -12,6 +12,9 @@ public class ImageFetcher {
 	private static Webcam webcam = null;
 	
 	protected static void openCamera(){
+		
+		if(webcam != null && webcam.isOpen())
+			webcam.close();
 		Webcam.setAutoOpenMode(true);
 		webcam = Webcam.getDefault();
 		webcam.setViewSize(new Dimension(640, 480));

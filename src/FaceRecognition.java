@@ -30,23 +30,44 @@ public class FaceRecognition {
 	private String[] customer_data;	// {name, email}
 	
 	public FaceRecognition() throws InterruptedException, FaceppParseException, JSONException, IOException {
-		ImageFetcher.openCamera();
 		
-		if(Config.DEBUG)
-			trainDetector(test_group);
-		else
-			trainDetector(main_group);
+		ImageFetcher.openCamera();
+		boolean isTrained = false;
+		
+		while(!isTrained){
+			try{
+				if(Config.DEBUG)
+					trainDetector(test_group);
+				else
+					trainDetector(main_group);
+				
+				isTrained = true;
+			}
+			catch(Exception e)
+			{
+			}
+		}
 		
 		while(!person_found && ATTEMPTS > 0  && Config.runRecognition){
-			if(Config.DEBUG)
-				customer_data = detectPerson(ImageFetcher.fetchImage(),test_group);
-			else
-				customer_data = detectPerson(ImageFetcher.fetchImage(),main_group);
+			try{
+				if(Config.DEBUG)
+					customer_data = detectPerson(ImageFetcher.fetchImage(),test_group);
+				else
+					customer_data = detectPerson(ImageFetcher.fetchImage(),main_group);
 			
+			}
+			catch(Exception e){
+				
+			}
+
 			ATTEMPTS--;
 		}
 		if(!Config.runRecognition)
+		{
 			System.out.println("Recognition stopped by the user");
+			ImageFetcher.closeCamera();
+			return;
+		}
 
 		// Person Found
 		if(person_found && customer_data.length == 2 && Config.runRecognition)

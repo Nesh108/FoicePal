@@ -172,18 +172,17 @@ public class GUI {
 		
 		///// Labels ////////////////////////////////////////////////
 		// Recognition Icon Labels
-		redIcon = new ImageIcon("/res/red_icon.png");
-		yellowIcon = new ImageIcon("/res/yellow_icon.png");
-		greenIcon = new ImageIcon("/res/green_icon.png");
+		redIcon = new ImageIcon("res/red_icon.png");
+		yellowIcon = new ImageIcon("res/yellow.png");
+		greenIcon = new ImageIcon("res/green_icon.png");
 		
-		voiceRecognitionIconLabel = new JLabel("");
-		voiceRecognitionIconLabel.setIcon(yellowIcon);
+		voiceRecognitionIconLabel = new JLabel(yellowIcon);
 		voiceRecognitionIconLabel.setBounds(79, 1070, 100, 100);
 		faceRecognitionIconLabel = new JLabel(yellowIcon);
-		faceRecognitionIconLabel.setBounds(166, 1070, 200, 200);
+		faceRecognitionIconLabel.setBounds(166, 1070, 100, 100);
 
 		// Adding components to main panel
-		mainPanel.add(botPanel);
+		//mainPanel.add(botPanel);
 		mainPanel.add(newCustomerButton);
 		mainPanel.add(fpCustomerButton);
 		mainPanel.add(voiceRecognitionIconLabel);
@@ -333,17 +332,17 @@ public class GUI {
 		
 		if(!goToCover)
 		{
-			if(SRTask.isAlive())
-				SRTask.interrupt();
-			SRTask.start();
+			SRTask.interrupt();
+			SRTask = new Thread(new FPTasks.SpeakerRecognitionTask());
 			
-			if(FRTask.isAlive())
-				FRTask.interrupt();
-			FRTask.start();
+			FRTask.interrupt();
+			FRTask = new Thread(new FPTasks.FaceRecognitionTask());
 		}
 		else
-			if(MTask.isAlive())
-				MTask.start();
+			{
+				MTask.interrupt();
+				MTask = new Thread(new FPTasks.MotionRecognitionTask());
+			}
 	}
 	
 	private static void customerRecognized(){
