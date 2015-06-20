@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -49,6 +50,9 @@ public class GUI {
 	// Labels
 	private static JLabel faceRecognitionIconLabel;
 	private static JLabel voiceRecognitionIconLabel;
+	private static JLabel totalPriceLabel;
+	
+	private static double totalPrice = 0.00;
 	
 	// TODO: implement voice
 	private static boolean isVoiceRecognized = true;
@@ -69,6 +73,9 @@ public class GUI {
 	private static ArrayList<Object[]> productsList;
 	
 	public GUI(){
+		
+		javax.swing.UIManager.put("OptionPane.font", new Font("Arial", Font.PLAIN, 35));
+	       
 		// Main Frame
 		mainFrame = new JFrame();
 		mainFrame.setBounds(0, 0, Config.WIDTH, Config.HEIGTH);
@@ -199,6 +206,12 @@ public class GUI {
 		voiceRecognitionIconLabel.setBounds(166, 1070, 100, 100);
 		faceRecognitionIconLabel = new JLabel(yellowIcon);
 		faceRecognitionIconLabel.setBounds(79, 1070, 100, 100);
+		
+		// Total Shopping Chart
+		totalPriceLabel = new JLabel("Total: 0.00 EUR");
+		totalPriceLabel.setFont(new Font("Arial", Font.PLAIN, 40));
+		//totalPrice.setBounds(944, 993, 453, 74);
+		totalPriceLabel.setBounds(94, 99, 453, 74);
 
 		// Adding components to main panel
 		//mainPanel.add(botPanel);
@@ -212,6 +225,7 @@ public class GUI {
 		shoppingPanel.add(backToMainPanelButton);
 		shoppingPanel.add(checkoutButton);
 		shoppingPanel.add(FPcheckoutButton);
+		shoppingPanel.add(totalPriceLabel);
 		
 		// Adding components to main window
 		mainFrame.add(mainPanel);
@@ -260,6 +274,40 @@ public class GUI {
 		productTableScrollPane = new JScrollPane(productTable);
 		productTableScrollPane.setBounds(712, 92, 1144, 886);
 		productTableScrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1, true));
+		
+		productTable.addMouseListener(new java.awt.event.MouseAdapter() {
+		    @Override
+		    public void mouseClicked(java.awt.event.MouseEvent evt) {
+
+		    	int row = productTable.rowAtPoint(evt.getPoint());
+		       
+		    	int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to Remove: '" + shoppingChart.get(row)[2] + "'?","Warning", JOptionPane.WARNING_MESSAGE);
+		    	if(dialogResult == JOptionPane.YES_OPTION){
+		    		removeProd((String)shoppingChart.get(row)[0], row);
+		    	}
+		        
+		    }
+		});
+	}
+	
+	protected static void removeProd(String code, int row){
+		for(int i = 0; i < productsList.size(); i++)
+		{
+			if(productsList.get(i)[0].equals(code))
+			{
+				removeFromShoppingChart(productsList.get(i), row);
+				System.out.println("FOUND ITEM");
+				break;
+			}
+		}
+	}
+	
+	protected static void removeFromShoppingChart(Object[] prod, int row){
+		
+		totalPrice -= Double.parseDouble((String)prod[3]);
+		totalPriceLabel.setText("Total: " + totalPrice + " EUR");
+		shoppingChart.remove(row);
+		productTableModel.removeRow(row);
 	}
 	
 	protected static void addProd(String code){
@@ -277,6 +325,8 @@ public class GUI {
 	
 	protected static void addToShoppingChart(Object[] prod){
 		
+		totalPrice += Double.parseDouble((String)prod[3]);
+		totalPriceLabel.setText("Total: " + totalPrice + " EUR");
 		shoppingChart.add(prod);
 		productTableModel.addRow(prod);
 	}
