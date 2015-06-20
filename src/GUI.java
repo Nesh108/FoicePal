@@ -60,7 +60,7 @@ public class GUI {
 		
 		// FP Customer Button
 		fpCustomerButton = new JButton("FoicePal Customer");
-		fpCustomerButton.setBounds(771, 602,389, 93);
+		fpCustomerButton.setBounds(766, 602,389, 93);
 		fpCustomerButton.setFont(new Font("Arial", Font.PLAIN, 40));
 		fpCustomerButton.addActionListener(new ActionListener() {
 
