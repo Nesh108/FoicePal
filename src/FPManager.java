@@ -23,6 +23,7 @@ public class FPManager {
 		     public void run() {
 		         // do stuff here
 		    	 System.out.println("Started GUI");
+		    	 new GUI();
 		     }
 		}
 		
