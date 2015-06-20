@@ -147,7 +147,6 @@ public class GUI {
 		checkoutButton = new JButton("Checkout");
 		checkoutButton.setBounds(1467, 993,389, 93);
 		checkoutButton.setFont(new Font("Arial", Font.PLAIN, 40));
-		checkoutButton.setVisible(false);
 		checkoutButton.addActionListener(new ActionListener() {
 
             @Override
@@ -178,7 +177,8 @@ public class GUI {
 		yellowIcon = new ImageIcon("/res/yellow_icon.png");
 		greenIcon = new ImageIcon("/res/green_icon.png");
 		
-		voiceRecognitionIconLabel = new JLabel(yellowIcon);
+		voiceRecognitionIconLabel = new JLabel("");
+		voiceRecognitionIconLabel.setIcon(yellowIcon);
 		voiceRecognitionIconLabel.setBounds(79, 1070, 80, 80);
 		faceRecognitionIconLabel = new JLabel(yellowIcon);
 		faceRecognitionIconLabel.setBounds(166, 1070, 80, 80);
@@ -334,11 +334,17 @@ public class GUI {
 		
 		if(!goToCover)
 		{
+			if(SRTask.isAlive())
+				SRTask.interrupt();
 			SRTask.start();
+			
+			if(FRTask.isAlive())
+				FRTask.interrupt();
 			FRTask.start();
 		}
 		else
-			MTask.start();
+			if(MTask.isAlive())
+				MTask.start();
 	}
 	
 	private static void customerRecognized(){
