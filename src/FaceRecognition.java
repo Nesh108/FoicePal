@@ -58,6 +58,10 @@ public class FaceRecognition {
 		}
 		else if(person_found && customer_data.length != 2)
 			new Throwable("This is not supposed to ever happen!");
+		else if(!person_found)
+		{
+			GUI.setFaceRecognized(null, null);
+		}
 		
 		ImageFetcher.closeCamera();
 	}

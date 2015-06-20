@@ -1,8 +1,3 @@
-import java.io.IOException;
-
-import org.json.JSONException;
-
-import com.facepp.error.FaceppParseException;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamMotionDetector;
 import com.github.sarxos.webcam.WebcamMotionEvent;
@@ -15,35 +10,13 @@ public class MotionDetector implements WebcamMotionListener {
 	static public Object LOCK = new Object();
 	static boolean isDetected = false;
 	
-	Thread SRTask = new Thread(new SpeakerRecognitionTask());
-	Thread FRTask = new Thread(new FaceRecognitionTask());
-	
-	class SpeakerRecognitionTask implements Runnable {
-	     public void run() {
-	         // do stuff here
-	    	 System.out.println("Started SpeakerRecognition");
-	     }
-	}
-	
-	class FaceRecognitionTask implements Runnable {
-	     public void run() {
-	         // do stuff here
-	    	 System.out.println("Started FaceRecognition");
-	    	 try {
-				new FaceRecognition(false);
-
-			} catch (InterruptedException | FaceppParseException
-					| JSONException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	     }
-	}
+	Thread SRTask;
+	Thread FRTask;
 	
 	public MotionDetector() {
 
-		SRTask = new Thread(new SpeakerRecognitionTask());
-		FRTask = new Thread(new FaceRecognitionTask());
+		SRTask = new Thread(new FPTasks.SpeakerRecognitionTask());
+		FRTask = new Thread(new FPTasks.FaceRecognitionTask());
 		
 		detector = new WebcamMotionDetector(Webcam.getDefault());
 		detector.setInterval(500); // one check per 500 ms

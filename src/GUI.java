@@ -32,6 +32,8 @@ public class GUI {
 	// Buttons
 	private static JButton newCustomerButton;
 	private static JButton fpCustomerButton;
+	private static JButton backToMainPanelButton;
+	private static JButton checkoutButton;
 	
 	// Tables
 	private static JTable productTable;
@@ -39,12 +41,28 @@ public class GUI {
 	JScrollPane productTableScrollPane;
 	DefaultTableModel productTableModel;
 	
+	// Icon
+	private static ImageIcon redIcon;
+	private static ImageIcon yellowIcon;
+	private static ImageIcon greenIcon;
+	
+	// Labels
+	private static JLabel faceRecognitionIconLabel;
+	private static JLabel voiceRecognitionIconLabel;
+	
 	// TODO: implement voice
 	private static boolean isVoiceRecognized = true;
 	private static boolean isFaceRecognized = false;
 	
 	private static String customer_email = null;
 	private static String customer_name = null;
+	
+	private static boolean isFPCustomer = false;
+	
+	private static Thread SRTask = new Thread(new FPTasks.SpeakerRecognitionTask());
+	private static Thread FRTask = new Thread(new FPTasks.FaceRecognitionTask());
+	private static Thread MTask = new Thread(new FPTasks.MotionRecognitionTask());
+
 	
 	public GUI(){
 		// Main Frame
@@ -90,6 +108,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				Config.runRecognition = false;
+				isFPCustomer = false;
 				toggleShoppingPanel();
 			}
 
@@ -104,11 +123,39 @@ public class GUI {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+            	isFPCustomer = true;
             	toggleShoppingPanel();
             }
 
         });
 		
+		// Back to Main menu
+		backToMainPanelButton = new JButton("Back");
+		backToMainPanelButton.setBounds(66, 993,389, 93);
+		backToMainPanelButton.setFont(new Font("Arial", Font.PLAIN, 40));
+		backToMainPanelButton.setVisible(false);
+		backToMainPanelButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	clearGUI(false);
+            }
+
+        });
+		
+		// Checkout
+		checkoutButton = new JButton("Checkout");
+		checkoutButton.setBounds(1467, 993,389, 93);
+		checkoutButton.setFont(new Font("Arial", Font.PLAIN, 40));
+		checkoutButton.setVisible(false);
+		checkoutButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+            }
+
+        });
 		///// Tables ////////////////////////////////////////////////
 		// Product table
 		setupProductTable();
@@ -125,12 +172,23 @@ public class GUI {
 			e1.printStackTrace();
 		}
 		
+		///// Labels ////////////////////////////////////////////////
+		// Recognition Icon Labels
+		redIcon = new ImageIcon("/res/red_icon.png");
+		yellowIcon = new ImageIcon("/res/yellow_icon.png");
+		greenIcon = new ImageIcon("/res/green_icon.png");
 		
-		
+		voiceRecognitionIconLabel = new JLabel(yellowIcon);
+		voiceRecognitionIconLabel.setBounds(79, 1070, 80, 80);
+		faceRecognitionIconLabel = new JLabel(yellowIcon);
+		faceRecognitionIconLabel.setBounds(166, 1070, 80, 80);
+
 		// Adding components to main panel
 		mainPanel.add(botPanel);
 		mainPanel.add(newCustomerButton);
 		mainPanel.add(fpCustomerButton);
+		mainPanel.add(voiceRecognitionIconLabel);
+		mainPanel.add(faceRecognitionIconLabel);
 		
 		// Adding components to shopping panel
 		shoppingPanel.add(productTableScrollPane);
@@ -197,12 +255,28 @@ public class GUI {
 	
 	protected static void setVoiceRecognized(String customer_email){
 		
+		// Customer not recognized
+		if(customer_email == null)
+		{
+			voiceRecognitionIconLabel.setIcon(redIcon);
+			return;
+		}
+		
 		if(GUI.customer_email == null)
 			GUI.customer_email = customer_email;
 		else if(!GUI.customer_email.equals(customer_email))
-			return;	// mismatching email
+			{
+				faceRecognitionIconLabel.setIcon(redIcon);
+				voiceRecognitionIconLabel.setIcon(redIcon);
+				
+				if(Config.DEBUG)
+					System.out.println("Email mismatch!");
+				
+				return;	// mismatching email
+			}
 		
 		isVoiceRecognized = true;
+		voiceRecognitionIconLabel.setIcon(greenIcon);
 		
 		if(isFaceRecognized)
 			customerRecognized();
@@ -210,15 +284,32 @@ public class GUI {
 	
 	protected static void setFaceRecognized(String customer_name, String customer_email){
 		
+		// Customer not recognized
+		if(customer_name == null || customer_email == null)
+		{
+			faceRecognitionIconLabel.setIcon(redIcon);
+			return;
+		}
+		
 		if(GUI.customer_email == null)
 			GUI.customer_email = customer_email;
 		else if(!GUI.customer_email.equals(customer_email))
-			return;	// mismatching email
+			{
+				faceRecognitionIconLabel.setIcon(redIcon);
+				voiceRecognitionIconLabel.setIcon(redIcon);
+				
+				if(Config.DEBUG)
+					System.out.println("Email mismatch!");
+								
+				return;	// mismatching email
+			}
 		
 		GUI.customer_name = customer_name;
 		
 		isFaceRecognized = true;
 
+		faceRecognitionIconLabel.setIcon(greenIcon);
+		
 		if(isVoiceRecognized)
 			customerRecognized();
 	}
@@ -232,9 +323,20 @@ public class GUI {
 		// Checks if it needs to go to cover panel or not
 		mainPanel.setVisible(!goToCover);
 		coverPanel.setVisible(goToCover);
+
+		faceRecognitionIconLabel.setIcon(null);
+		voiceRecognitionIconLabel.setIcon(null);
 		
 		// Resets recognition
 		Config.runRecognition = true;
+		
+		if(!goToCover)
+		{
+			SRTask.start();
+			FRTask.start();
+		}
+		else
+			MTask.start();
 	}
 	
 	private static void customerRecognized(){
@@ -247,5 +349,6 @@ public class GUI {
 		shoppingPanel.setVisible(!shoppingPanel.isVisible());
 		mainPanel.setVisible(!mainPanel.isVisible());
 	}
+	
 
 }
