@@ -65,6 +65,7 @@ public class GUI {
 	private static Thread FRTask = new Thread(new FPTasks.FaceRecognitionTask());
 	private static Thread MTask = new Thread(new FPTasks.MotionRecognitionTask());
 	private static Thread PayTask;
+	private static Thread ScannerTask;
 
 	private static ArrayList<Object[]> prodData;
 	
@@ -148,8 +149,8 @@ public class GUI {
 		
 		// Normal Checkout
 		checkoutButton = new JButton("Normal Checkout");
-		checkoutButton.setBounds(1467, 983,389, 93);
-		//checkoutButton.setBounds(100, 93,389, 93);
+		//checkoutButton.setBounds(1467, 983,389, 93);
+		checkoutButton.setBounds(100, 93,389, 93);
 		checkoutButton.setFont(new Font("Arial", Font.PLAIN, 40));
 		checkoutButton.addActionListener(new ActionListener() {
 
@@ -162,8 +163,8 @@ public class GUI {
 		
 		// Checkout with FoicePal
 		FPcheckoutButton = new JButton("FoicePal Checkout");
-		checkoutButton.setBounds(1467, 1086,389, 93);
-		//FPcheckoutButton.setBounds(100, 208,389, 93);
+		//FPcheckoutButton.setBounds(1467, 1086,389, 93);
+		FPcheckoutButton.setBounds(100, 208,389, 93);
 		FPcheckoutButton.setFont(new Font("Arial", Font.PLAIN, 40));
 		FPcheckoutButton.setVisible(false);
 		FPcheckoutButton.addActionListener(new ActionListener() {
@@ -393,6 +394,11 @@ public class GUI {
 		mainPanel.setVisible(!mainPanel.isVisible());
 
     	FPcheckoutButton.setVisible(isFPCustomer);
+    	
+    	if(shoppingPanel.isVisible())
+    	{
+    		ScannerTask = new Thread(new FPTasks.ProductScannerTask());
+    	}
 	}
 	
 	protected static String getCustomerName(){
