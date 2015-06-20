@@ -11,26 +11,79 @@ import com.facepp.http.PostParameters;
 
 public class FaceRecognition {
 	
-	static String API_KEY = "ab04a5c7375946e5a7d1e09c9197b379";
-	static String API_SECRET_KEY = "2cFI85Ehg_DQbu_hVDIkkSY1B84QxLlO";
+	private String API_KEY = "ab04a5c7375946e5a7d1e09c9197b379";
+	private String API_SECRET_KEY = "2cFI85Ehg_DQbu_hVDIkkSY1B84QxLlO";
 	
-	static HttpRequests httpRequests = new HttpRequests(API_KEY, API_SECRET_KEY, true, false);
-	static String URL_ARNOLD = "http://ia.media-imdb.com/images/M/MV5BMTI3MDc4NzUyMV5BMl5BanBnXkFtZTcwMTQyMTc5MQ@@._V1_.jpg";
+	private HttpRequests httpRequests = new HttpRequests(API_KEY, API_SECRET_KEY, true, false);
 	
-	static String session_id = null;
+	private String session_id = null;
 	
-	static boolean person_found = false;
-	static double confidence_min = 65.0;
+	private boolean person_found = false;
+	private double confidence_min = 65.0;
 
-	static String test_group = "People_Test1";
+	private String test_group = "People_Test1";
+	private String main_group = "People";
 	
-	static int PHOTOS_PER_SET = 3;
+	private int PHOTOS_PER_SET = 20;
+	private int ATTEMPTS = 10;
 	
-	static boolean isDetected = false;
+	private String[] customer_data;	// {name, email}
 	
-	static public Object LOCK = new Object();
+	public FaceRecognition() throws InterruptedException, FaceppParseException, JSONException, IOException {
+		ImageFetcher.openCamera();
+		
+		if(Config.DEBUG)
+			trainDetector(test_group);
+		else
+			trainDetector(main_group);
+		
+		while(!person_found && ATTEMPTS > 0){
+			if(Config.DEBUG)
+				customer_data = detectPerson(ImageFetcher.fetchImage(),test_group);
+			else
+				customer_data = detectPerson(ImageFetcher.fetchImage(),main_group);
+			
+			ATTEMPTS--;
+		}
+
+		// Person Found
+		if(person_found && customer_data.length == 2)
+		{
+			if(Config.DEBUG)
+				System.out.println("Found face: " + customer_data[0] + " and email: " + Tools.convertTagIntoEmail(customer_data[1]));
+			
+			Tools.speakText("Hey: " + customer_data[0] + ". Welcome back!");
+		}
+		else if(person_found && customer_data.length != 2)
+			new Throwable("This is not supposed to ever happen!");
+		
+		ImageFetcher.closeCamera();
+	}
 	
-	public static void test() throws InterruptedException, FaceppParseException, JSONException {
+	public FaceRecognition(boolean train) throws InterruptedException, FaceppParseException, JSONException, IOException {
+	
+		if(!train)
+			new FaceRecognition();
+		else
+		{
+			try {
+				
+				ImageFetcher.openCamera();
+				
+				createPersonSet("Hasan Dude", "h_email[at]gmail.com", test_group);
+				
+				ImageFetcher.closeCamera();
+				System.exit(0);
+				
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void test() throws InterruptedException, FaceppParseException, JSONException {
 		 
 		try {
 			
@@ -47,7 +100,7 @@ public class FaceRecognition {
 			//addNewPerson("Arnold Swarz2", URL_ARNOLD, "Arnold2[at]gmail.com", "Famous People");
 			
 			//createPersonSet("Test_Person#0", "person1_email[at]gmail.com", test_group);
-			trainDetector("People_Test1");
+			trainDetector(test_group);
 			
 			while(!person_found)
 				detectPerson(ImageFetcher.fetchImage(),test_group);
@@ -61,26 +114,30 @@ public class FaceRecognition {
 		}
 	}
 	
-	protected static void waitMotion(){
-		synchronized (LOCK) {
-		    while (!isDetected) {
-		        try { LOCK.wait(); }
-		        catch (InterruptedException e) {
-		            // treat interrupt as exit request
-		            break;
-		        }
-		    }
-		}
-	}
-	
-	protected static void createPersonSet(String person_name, String person_email, String group) throws FaceppParseException, JSONException, IOException, InterruptedException{
+	protected void createPersonSet(String person_name, String person_email, String group) throws FaceppParseException, JSONException, IOException, InterruptedException{
+		
+		if(Config.DEBUG)
+			System.out.println("Starting photo set");
 		
 		for(int i = 0; i < PHOTOS_PER_SET; i++)
-			addNewPerson(person_name, ImageFetcher.fetchImage(), person_email, group);
+			{
+				try{
+					if(Config.DEBUG)
+						System.out.println("Photo: #" + (i + 1));
+					addNewPerson(person_name, ImageFetcher.fetchImage(), person_email, group);
+				}
+				catch(Exception e)
+				{
+					
+				}
+				
+			}
 		
+		if(Config.DEBUG)
+			System.out.println("Photo set finished.");
 	}
 	
-	protected static void sendRequest() throws FaceppParseException, JSONException, IOException{
+	protected void sendRequest() throws FaceppParseException, JSONException, IOException{
 		PostParameters postParameters =
 			      new PostParameters()
 			          .setUrl("http://faceplusplus.com/static/img/demo/20.jpg")
@@ -98,7 +155,7 @@ public class FaceRecognition {
 		
 	}
 	
-	protected static void addNewPerson(String person_name, String url_face, String person_tag, String group) throws FaceppParseException, JSONException, IOException{
+	protected void addNewPerson(String person_name, String url_face, String person_tag, String group) throws FaceppParseException, JSONException, IOException{
 		JSONObject result = httpRequests.detectionDetect(new PostParameters().setUrl(url_face));
 		System.out.println(result);
 		
@@ -145,7 +202,7 @@ public class FaceRecognition {
 
 	}
 	
-	protected static void addNewPerson(String person_name, BufferedImage img_face, String person_tag, String group) throws FaceppParseException, JSONException, IOException{
+	protected void addNewPerson(String person_name, BufferedImage img_face, String person_tag, String group) throws FaceppParseException, JSONException, IOException{
 		
 		JSONObject result = httpRequests.detectionDetect(new PostParameters().setImg(Tools.getByteFromBufferedImage(img_face), person_name + ".jpg"));
 		if(Config.DEBUG)
@@ -195,7 +252,7 @@ public class FaceRecognition {
 
 	}
 	
-	protected static void trainDetector(String group_name) throws FaceppParseException, JSONException{
+	protected void trainDetector(String group_name) throws FaceppParseException, JSONException{
 		//recognition/train
 		if(Config.DEBUG)
 			System.out.println("\nrecognition/train");
@@ -208,10 +265,10 @@ public class FaceRecognition {
 	}
 	
 	
-	protected static void detectPerson(BufferedImage img_face, String group_name) throws FaceppParseException, IOException, JSONException{
+	protected String[] detectPerson(BufferedImage img_face, String group_name) throws FaceppParseException, IOException, JSONException{
 				
 		if(session_id == null)
-			return;
+			return new String[]{};
 		
 		//recognition/recognize
 		if(Config.DEBUG)
@@ -226,12 +283,13 @@ public class FaceRecognition {
 			JSONObject person = result.getJSONArray("face").getJSONObject(0).getJSONArray("candidate").getJSONObject(i);
 			if(person.getDouble("confidence") >= confidence_min)
 			{
-				if(Config.DEBUG)
-					System.out.println("Found face: " + person.getString("person_name") + " and email: " + Tools.convertTagIntoEmail(person.getString("tag")));
-				Tools.speakText("Welcome to the store: " + person.getString("person_name") + ".");
 				person_found = true;
+				return new String[]{person.getString("person_name"), Tools.convertTagIntoEmail(person.getString("tag"))};
+				
 			}	
 		}
+		
+		return new String[]{};
 		
 		
 	}
