@@ -28,6 +28,7 @@ public class GUI {
 	private static JPanel botPanel;
 	private static JPanel coverPanel;
 	private static JPanel shoppingPanel;
+	private static JPanel checkoutPanel;
 	
 	// Buttons
 	private static JButton newCustomerButton;
@@ -214,7 +215,7 @@ public class GUI {
 		totalPriceLabel.setBounds(94, 99, 453, 74);
 
 		// Adding components to main panel
-		//mainPanel.add(botPanel);
+		mainPanel.add(botPanel);
 		mainPanel.add(newCustomerButton);
 		mainPanel.add(fpCustomerButton);
 		mainPanel.add(voiceRecognitionIconLabel);
