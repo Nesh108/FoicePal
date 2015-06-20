@@ -39,7 +39,7 @@ public class GUI {
 		
 		// Bot Panel
 		botPanel = new JPanel();
-		botPanel.setBounds(64, 5, 597, 604);
+		botPanel.setBounds(82, 91, 597, 604);
 		botPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1, true));
 		botPanel.setLayout(null);
 		
@@ -60,7 +60,7 @@ public class GUI {
 		
 		// FP Customer Button
 		fpCustomerButton = new JButton("FoicePal Customer");
-		fpCustomerButton.setBounds(766, 476,389, 93);
+		fpCustomerButton.setBounds(771, 602,389, 93);
 		fpCustomerButton.setFont(new Font("Arial", Font.PLAIN, 40));
 		fpCustomerButton.addActionListener(new ActionListener() {
 
