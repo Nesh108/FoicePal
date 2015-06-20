@@ -9,9 +9,11 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -109,46 +111,13 @@ public class GUI {
 		
 		///// Tables ////////////////////////////////////////////////
 		// Product table
-		productTableModel = new DefaultTableModel(productTableColumns, 0){
-		    @Override
-		    public Class<?> getColumnClass(int column) {
-		        switch(column) {
-		            case 0: return Integer.class;
-		            case 1: return ImageIcon.class;
-		            case 2: return String.class;
-		            case 3: return Integer.class;
-		            case 4: return String.class;
-		            default: return Object.class;
-		        }
-		    }
-		    
-		    @Override
-		    public boolean isCellEditable(int row, int column) {
-		        return false;
-		    }
-		    
-		};
-		
-		productTable = new JTable(productTableModel);
-		productTable.setBounds(0, 0, 1144, 886);
-		productTable.setFont(new Font("Arial", Font.PLAIN, 40));
-		productTable.getTableHeader().setFont(new Font("Arial", Font.PLAIN, 40));
-		productTable.setRowHeight(200);
-		productTable.getColumnModel().getColumn(0).setPreferredWidth(200);
-		productTable.getColumnModel().getColumn(1).setPreferredWidth(200);
-		productTable.getColumnModel().getColumn(2).setPreferredWidth(300);
-		productTable.getColumnModel().getColumn(3).setPreferredWidth(200);
-		productTable.getColumnModel().getColumn(4).setPreferredWidth(200);
-		
-		productTableScrollPane = new JScrollPane(productTable);
-		productTableScrollPane.setBounds(712, 92, 1144, 886);
-		productTableScrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1, true));
+		setupProductTable();
 		
 		ImageIcon image;
 		try {
 			image = new ImageIcon(Tools.getScaledImage(ImageIO.read(getClass().getResourceAsStream("/res/mouse.jpg")), 200, 200));
 			
-			Object[] objs = {1010101,image,"Mouse", 1, "20.00E"};
+			Object[] objs = {"1010101",image,"Mouse", "1", "20.00E"};
 			productTableModel.addRow(objs);
 			
 		} catch (IOException e1) {
@@ -174,6 +143,46 @@ public class GUI {
 		mainFrame.setVisible(true);
 	}
 	
+	private void setupProductTable(){
+		productTableModel = new DefaultTableModel(productTableColumns, 0){
+		    @Override
+		    public Class<?> getColumnClass(int column) {
+		        switch(column) {
+		            case 0: return String.class;
+		            case 1: return ImageIcon.class;
+		            case 2: return String.class;
+		            case 3: return String.class;
+		            case 4: return String.class;
+		            default: return Object.class;
+		        }
+		    }
+		    
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		        return false;
+		    }
+		    
+		};
+		
+		productTable = new JTable(productTableModel);
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		productTable.setDefaultRenderer(Object.class, centerRenderer);
+		
+		productTable.setBounds(0, 0, 1144, 886);
+		productTable.setFont(new Font("Arial", Font.PLAIN, 35));
+		productTable.getTableHeader().setFont(new Font("Arial", Font.PLAIN, 35));
+		productTable.setRowHeight(200);
+		productTable.getColumnModel().getColumn(0).setPreferredWidth(200);
+		productTable.getColumnModel().getColumn(1).setPreferredWidth(240);
+		productTable.getColumnModel().getColumn(2).setPreferredWidth(320);
+		productTable.getColumnModel().getColumn(3).setPreferredWidth(180);
+		productTable.getColumnModel().getColumn(4).setPreferredWidth(160);
+		
+		productTableScrollPane = new JScrollPane(productTable);
+		productTableScrollPane.setBounds(712, 92, 1144, 886);
+		productTableScrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1, true));
+	}
 	/**
 	 *	Toggles the cover and the main panel
 	*/
