@@ -3,6 +3,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -37,9 +38,9 @@ public class GUI {
 	
 	// Tables
 	private static JTable productTable;
-	String productTableColumns[] = {"Product ID","Product Photo","Product Name", "Quantity", "Price"};
+	String productTableColumns[] = {"Product ID","Product Photo","Product Name","Price", "Currency"};
 	JScrollPane productTableScrollPane;
-	DefaultTableModel productTableModel;
+	private static DefaultTableModel productTableModel;
 	
 	// Icon
 	private static ImageIcon redIcon;
@@ -63,6 +64,7 @@ public class GUI {
 	private static Thread FRTask = new Thread(new FPTasks.FaceRecognitionTask());
 	private static Thread MTask = new Thread(new FPTasks.MotionRecognitionTask());
 
+	private static ArrayList<Object[]> prodData;
 	
 	public GUI(){
 		// Main Frame
@@ -142,33 +144,37 @@ public class GUI {
 
         });
 		
-		// Checkout
-		checkoutButton = new JButton("Checkout");
+		// Checkout with FoicePal
+		checkoutButton = new JButton("FoicePal Checkout");
 		checkoutButton.setBounds(1467, 993,389, 93);
+		//checkoutButton.setBounds(100, 93,389, 93);
 		checkoutButton.setFont(new Font("Arial", Font.PLAIN, 40));
 		checkoutButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-            	
+            	//new PaymentHandler().sendPayment(customer_name, customer_data, prodData);
+            	new PaymentHandler().sendPayment("Andrey Boss", "email@gmail.cum,23932932932", prodData);
             }
 
         });
 		///// Tables ////////////////////////////////////////////////
 		// Product table
-		setupProductTable();
+		
 		
 		ImageIcon image;
 		try {
-			image = new ImageIcon(Tools.getScaledImage(ImageIO.read(getClass().getResourceAsStream("/res/mouse.jpg")), 200, 200));
-			
-			Object[] objs = {"1010101",image,"Mouse", "1", "20.00E"};
-			productTableModel.addRow(objs);
+			setupProductTable();
+			image = new ImageIcon(Tools.getScaledImage(ImageIO.read(getClass().getResource("/res/mouse.jpg")), 200, 200));
+			prodData = new ArrayList<Object[]>();
+			addProdToTable(new Object[]{"1010101",image,"Mouse", "20.00", "EUR"});
+			addProdToTable(new Object[]{"1234",image,"Animal", "40.00", "EUR"});
 			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
 		
 		///// Labels ////////////////////////////////////////////////
 		// Recognition Icon Labels
@@ -231,7 +237,7 @@ public class GUI {
 		productTable.setFont(new Font("Arial", Font.PLAIN, 35));
 		productTable.getTableHeader().setFont(new Font("Arial", Font.PLAIN, 35));
 		productTable.setRowHeight(200);
-		productTable.getColumnModel().getColumn(0).setPreferredWidth(200);
+		productTable.getColumnModel().getColumn(0).setPreferredWidth(160);
 		productTable.getColumnModel().getColumn(1).setPreferredWidth(240);
 		productTable.getColumnModel().getColumn(2).setPreferredWidth(320);
 		productTable.getColumnModel().getColumn(3).setPreferredWidth(180);
@@ -240,6 +246,12 @@ public class GUI {
 		productTableScrollPane = new JScrollPane(productTable);
 		productTableScrollPane.setBounds(712, 92, 1144, 886);
 		productTableScrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1, true));
+	}
+	
+	protected static void addProdToTable(Object[] prod){
+		
+		prodData.add(prod);
+		productTableModel.addRow(prod);
 	}
 	/**
 	 *	Toggles the cover and the main panel
