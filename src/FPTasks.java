@@ -1,5 +1,7 @@
 import java.io.IOException;
 
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import org.json.JSONException;
 
 import com.facepp.error.FaceppParseException;
@@ -17,8 +19,17 @@ public class FPTasks {
 	
 	protected static class SpeakerRecognitionTask implements Runnable {
 	     public void run() {
-	         // do stuff here
 	    	 System.out.println("Started SpeakerRecognition");
+	         try {
+				new SpeakerRecognition();
+			} catch (UnsupportedAudioFileException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 	     }
 	}
 	

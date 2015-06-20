@@ -4,7 +4,6 @@ public class FPManager {
 	
 	public static void main(String[] args){
 		
-		
 		Thread MTask;
 		Thread GUITask;
 		
