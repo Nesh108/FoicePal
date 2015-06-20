@@ -192,6 +192,8 @@ public class GUI {
 		
 		// Adding components to shopping panel
 		shoppingPanel.add(productTableScrollPane);
+		shoppingPanel.add(backToMainPanelButton);
+		shoppingPanel.add(checkoutButton);
 		
 		// Adding components to main window
 		mainFrame.add(mainPanel);
