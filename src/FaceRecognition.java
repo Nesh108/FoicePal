@@ -35,12 +35,12 @@ public class FaceRecognition {
 		try {
 			
 			// Detect Motion
-			new MotionDetector();
+		/*	new MotionDetector();
 
 			waitMotion();
 			
 			if(Config.DEBUG)
-				System.out.println("Detected");
+				System.out.println("Detected");*/
 			
 			ImageFetcher.openCamera();
 			//sendRequest();

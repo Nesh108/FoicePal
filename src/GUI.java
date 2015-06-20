@@ -13,15 +13,16 @@ public class GUI {
 	
 	// GUI Components
 	// Frames
-	private JFrame mainFrame;
+	private static JFrame mainFrame;
 
 	// Panels
-	private JPanel mainPanel;
-	private JPanel botPanel;
+	private static JPanel mainPanel;
+	private static JPanel botPanel;
+	private static JPanel coverPanel;
 	
 	// Buttons
-	private JButton newCustomerButton;
-	private JButton fpCustomerButton;
+	private static JButton newCustomerButton;
+	private static JButton fpCustomerButton;
 	
 	public GUI(){
 		// Main Frame
@@ -36,6 +37,13 @@ public class GUI {
 		mainPanel = new JPanel();
 		mainPanel.setBounds(0, 0, Config.WIDTH, Config.HEIGTH);
 		mainPanel.setLayout(null);
+		mainPanel.setVisible(false);
+		
+		// Cover Panel
+		coverPanel = new JPanel();
+		coverPanel.setBackground(Color.BLUE);
+		coverPanel.setBounds(0, 0, Config.WIDTH, Config.HEIGTH);
+		coverPanel.setLayout(null);
 		
 		// Bot Panel
 		botPanel = new JPanel();
@@ -78,8 +86,17 @@ public class GUI {
 		
 		// Adding components to main window
 		mainFrame.add(mainPanel);
+		mainFrame.add(coverPanel);
 
 		mainFrame.setVisible(true);
+	}
+	
+	/**
+	 *	Toggles the cover and the main panel
+	*/
+	protected static void toggleCoverPanel(){
+		coverPanel.setVisible(!coverPanel.isVisible());
+		mainPanel.setVisible(!mainPanel.isVisible());
 	}
 
 }
