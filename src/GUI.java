@@ -141,6 +141,7 @@ public class GUI {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+            	Config.runScanner = false;
             	shoppingChart.clear();
             	clearGUI(false);
             }
@@ -149,8 +150,8 @@ public class GUI {
 		
 		// Normal Checkout
 		checkoutButton = new JButton("Normal Checkout");
-		//checkoutButton.setBounds(1467, 983,389, 93);
-		checkoutButton.setBounds(100, 93,389, 93);
+		checkoutButton.setBounds(1467, 983,389, 93);
+		//checkoutButton.setBounds(100, 93,389, 93);
 		checkoutButton.setFont(new Font("Arial", Font.PLAIN, 40));
 		checkoutButton.addActionListener(new ActionListener() {
 
@@ -163,8 +164,8 @@ public class GUI {
 		
 		// Checkout with FoicePal
 		FPcheckoutButton = new JButton("FoicePal Checkout");
-		//FPcheckoutButton.setBounds(1467, 1086,389, 93);
-		FPcheckoutButton.setBounds(100, 208,389, 93);
+		FPcheckoutButton.setBounds(1467, 1086,389, 93);
+		//FPcheckoutButton.setBounds(100, 208,389, 93);
 		FPcheckoutButton.setFont(new Font("Arial", Font.PLAIN, 40));
 		FPcheckoutButton.setVisible(false);
 		FPcheckoutButton.addActionListener(new ActionListener() {
@@ -250,11 +251,11 @@ public class GUI {
 		productTable.setFont(new Font("Arial", Font.PLAIN, 35));
 		productTable.getTableHeader().setFont(new Font("Arial", Font.PLAIN, 35));
 		productTable.setRowHeight(200);
-		productTable.getColumnModel().getColumn(0).setPreferredWidth(160);
+		productTable.getColumnModel().getColumn(0).setPreferredWidth(210);
 		productTable.getColumnModel().getColumn(1).setPreferredWidth(240);
 		productTable.getColumnModel().getColumn(2).setPreferredWidth(320);
-		productTable.getColumnModel().getColumn(3).setPreferredWidth(180);
-		productTable.getColumnModel().getColumn(4).setPreferredWidth(160);
+		productTable.getColumnModel().getColumn(3).setPreferredWidth(140);
+		productTable.getColumnModel().getColumn(4).setPreferredWidth(150);
 		
 		productTableScrollPane = new JScrollPane(productTable);
 		productTableScrollPane.setBounds(712, 92, 1144, 886);
@@ -363,8 +364,8 @@ public class GUI {
 		mainPanel.setVisible(!goToCover);
 		coverPanel.setVisible(goToCover);
 
-		faceRecognitionIconLabel.setIcon(null);
-		voiceRecognitionIconLabel.setIcon(null);
+		faceRecognitionIconLabel.setIcon(yellowIcon);
+		voiceRecognitionIconLabel.setIcon(yellowIcon);
 		
 		// Resets recognition
 		Config.runRecognition = true;

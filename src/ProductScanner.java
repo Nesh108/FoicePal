@@ -45,7 +45,7 @@ public class ProductScanner {
 				{
 					GUI.addProd(barcode);
 					beepSound();
-					Thread.sleep(1000);
+					Thread.sleep(800);
 				}
 				
 			} catch (Exception e) {

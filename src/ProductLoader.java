@@ -25,13 +25,11 @@ public class ProductLoader {
 			String line;
 			while ((line = bufferedReader.readLine()) != null) {
 				// skip comments
-				System.out.println("Got here: ");
 				if(!line.contains("#"))
 				{
 					String[] prod = line.split(";");
 					products.add(new Object[]{prod[0],  new ImageIcon(Tools.getScaledImage(ImageIO.read(getClass().getResource(prod[1])), 200, 200)), prod[2],prod[3], prod[4]});
-					System.out.println("Got here and added: " + prod[0]);
-				}
+					}
 			}
 			fileReader.close();
 		} catch (IOException e) {
