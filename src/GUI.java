@@ -133,7 +133,6 @@ public class GUI {
 		backToMainPanelButton = new JButton("Back");
 		backToMainPanelButton.setBounds(66, 993,389, 93);
 		backToMainPanelButton.setFont(new Font("Arial", Font.PLAIN, 40));
-		backToMainPanelButton.setVisible(false);
 		backToMainPanelButton.addActionListener(new ActionListener() {
 
             @Override
@@ -179,9 +178,9 @@ public class GUI {
 		
 		voiceRecognitionIconLabel = new JLabel("");
 		voiceRecognitionIconLabel.setIcon(yellowIcon);
-		voiceRecognitionIconLabel.setBounds(79, 1070, 80, 80);
+		voiceRecognitionIconLabel.setBounds(79, 1070, 100, 100);
 		faceRecognitionIconLabel = new JLabel(yellowIcon);
-		faceRecognitionIconLabel.setBounds(166, 1070, 80, 80);
+		faceRecognitionIconLabel.setBounds(166, 1070, 200, 200);
 
 		// Adding components to main panel
 		mainPanel.add(botPanel);
