@@ -172,14 +172,14 @@ public class GUI {
 		
 		///// Labels ////////////////////////////////////////////////
 		// Recognition Icon Labels
-		redIcon = new ImageIcon("res/red_icon.png");
-		yellowIcon = new ImageIcon("res/yellow.png");
-		greenIcon = new ImageIcon("res/green_icon.png");
+		redIcon = new ImageIcon(getClass().getResource("/res/red_icon.png"));
+		yellowIcon = new ImageIcon(getClass().getResource("/res/yellow_icon.png"));
+		greenIcon = new ImageIcon(getClass().getResource("/res/green_icon.png"));
 		
 		voiceRecognitionIconLabel = new JLabel(yellowIcon);
-		voiceRecognitionIconLabel.setBounds(79, 1070, 100, 100);
+		voiceRecognitionIconLabel.setBounds(166, 1070, 100, 100);
 		faceRecognitionIconLabel = new JLabel(yellowIcon);
-		faceRecognitionIconLabel.setBounds(166, 1070, 100, 100);
+		faceRecognitionIconLabel.setBounds(79, 1070, 100, 100);
 
 		// Adding components to main panel
 		//mainPanel.add(botPanel);
