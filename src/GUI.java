@@ -211,8 +211,8 @@ public class GUI {
 		// Total Shopping Chart
 		totalPriceLabel = new JLabel("Total: 0.00 EUR");
 		totalPriceLabel.setFont(new Font("Arial", Font.PLAIN, 40));
-		//totalPrice.setBounds(944, 993, 453, 74);
-		totalPriceLabel.setBounds(94, 99, 453, 74);
+		totalPriceLabel.setBounds(944, 993, 453, 74);
+		//totalPriceLabel.setBounds(94, 99, 453, 74);
 
 		// Adding components to main panel
 		mainPanel.add(botPanel);
