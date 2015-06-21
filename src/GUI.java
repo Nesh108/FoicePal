@@ -109,6 +109,12 @@ public class GUI {
 		shoppingPanel.setLayout(null);
 		shoppingPanel.setVisible(false);
 		
+		// Checkout Panel
+		checkoutPanel = new JPanel();
+		checkoutPanel.setBounds(0, 0, Config.WIDTH, Config.HEIGTH);
+		checkoutPanel.setLayout(null);
+		checkoutPanel.setVisible(false);
+		
 		///// Buttons ////////////////////////////////////////////////
 		// New Customer Button
 		newCustomerButton = new JButton("Normal Customer");
@@ -222,16 +228,24 @@ public class GUI {
 		mainPanel.add(faceRecognitionIconLabel);
 		
 		// Adding components to shopping panel
+
+		shoppingPanel.add(botPanel);
 		shoppingPanel.add(productTableScrollPane);
 		shoppingPanel.add(backToMainPanelButton);
 		shoppingPanel.add(checkoutButton);
 		shoppingPanel.add(FPcheckoutButton);
 		shoppingPanel.add(totalPriceLabel);
 		
+		// Adding components to checkout panel
+
+		checkoutPanel.add(botPanel);
+		
 		// Adding components to main window
+		
 		mainFrame.add(mainPanel);
 		mainFrame.add(coverPanel);
 		mainFrame.add(shoppingPanel);
+		mainFrame.add(checkoutPanel);
 		
 		mainFrame.setVisible(true);
 	}
