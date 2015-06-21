@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -51,6 +50,9 @@ public class GUI {
 	private static ImageIcon redIcon;
 	private static ImageIcon yellowIcon;
 	private static ImageIcon greenIcon;
+	
+	private static ImageIcon voiceIcon;
+	private static ImageIcon faceIcon;
 
 	// Labels
 	private static JLabel faceRecognitionIconLabel;
@@ -58,6 +60,8 @@ public class GUI {
 	private static JLabel totalPriceLabel;
 	private static JLabel statusLabel;
 	private static JLabel transactionLabel;
+	private static JLabel voiceIconLabel;
+	private static JLabel faceIconLabel;
 
 	private static double totalPrice = 0.00;
 
@@ -225,6 +229,15 @@ public class GUI {
 		faceRecognitionIconLabel = new JLabel(yellowIcon);
 		faceRecognitionIconLabel.setBounds(79, 1070, 100, 100);
 
+		voiceIcon = new ImageIcon(getClass().getResource("/res/voice_icon.png"));
+		faceIcon = new ImageIcon(getClass().getResource(
+				"/res/face_icon.png"));
+		voiceIconLabel = new JLabel(voiceIcon);
+		voiceIconLabel.setBounds(166, 970, 100, 100);
+
+		faceIconLabel = new JLabel(faceIcon);
+		faceIconLabel.setBounds(79, 970, 100, 100);
+		
 		// Total Shopping Chart
 		totalPriceLabel = new JLabel("Total: 0.00 EUR");
 		totalPriceLabel.setFont(new Font("Arial", Font.PLAIN, 40));
@@ -248,6 +261,8 @@ public class GUI {
 		mainPanel.add(fpCustomerButton);
 		mainPanel.add(voiceRecognitionIconLabel);
 		mainPanel.add(faceRecognitionIconLabel);
+		mainPanel.add(faceIconLabel);
+		mainPanel.add(voiceIconLabel);
 
 		// Adding components to shopping panel
 

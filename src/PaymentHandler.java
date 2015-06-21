@@ -33,11 +33,11 @@ public class PaymentHandler {
 			c_last_name = "Last";
 		}
 
-		if (customer_data.split(",").length == 2) {
-			c_email = customer_data.split(",")[0];
-			c_phone_num = customer_data.split(",")[1];
+		if (customer_data.split("-").length == 2) {
+			c_email = Tools.convertTagIntoPhone(customer_data.split("-")[0]);
+			c_phone_num = Tools.convertTagIntoPhone(customer_data.split("-")[1]);
 		} else {
-			c_email = customer_data.split(",")[0];
+			c_email = customer_data.split("-")[0];
 			c_phone_num = "Phone";
 		}
 
