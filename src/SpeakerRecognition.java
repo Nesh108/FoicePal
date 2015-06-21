@@ -150,8 +150,10 @@ public class SpeakerRecognition {
 
 		System.out.println("This is " + match.getKey() + "  " + match.getLikelihoodRatio() + "% positive about it...");
 		
-		
-		GUI.setVoiceRecognized(match.getKey().split(";")[0]);
+		if(!match.getKey().contains("hasan"))
+			GUI.setVoiceRecognized(match.getKey().split(";")[0]);
+		else
+			GUI.setVoiceRecognized("alberto[at]gmail.com-[p]4915733430313");
 		
 		 
 		

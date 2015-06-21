@@ -9,62 +9,66 @@ public class ChatterBot {
 	public ChatterBot() throws IOException {
 		try {
 			SpeechToText speechToText = new SpeechToText();
-
 			speechToText.start();
+			
+
+			Tools.speak("Tell me something while I try to recognize you.");
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	static String prev_question = "HOW_ARE_YOU";
 
 	public static void think(String text) {
 
-		if (prev_question.equals("HOW_ARE_YOU")) {
-			if (text.toLowerCase().contains("and you")) {
+		if (Config.prev_question.equals("HOW_ARE_YOU")) {
+			if (!text.toLowerCase().contains("and youX")) {
 				Tools.speakText(Speech.getRandomString(Speech.HOW_ARE_YOU_REPLY_TYPE));
 				try {
-					Thread.sleep(1500);
+					Thread.sleep(4000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 			Tools.speakText(Speech.getRandomString(Speech.HOWS_DAY_TYPE));
-			prev_question = "HOWS_DAY";
-		} else if (prev_question.equals("HOWS_DAY")) {
+			Config.prev_question = "HOWS_DAY";
+		} else if (Config.prev_question.equals("HOWS_DAY")) {
 
-			if (text.toLowerCase().contains("and your")) {
+			if (!text.toLowerCase().contains("and yourX")) {
 				Tools.speakText(Speech
 						.getRandomString(Speech.HOWS_DAY_REPLY_TYPE));
 				try {
-					Thread.sleep(1500);
+					Thread.sleep(400);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 			Tools.speakText(Speech.getRandomString(Speech.PLANS_TODAY_TYPE));
-			prev_question = "PLANS_TODAY";
-		} else if (prev_question.equals("HOWS_DAY")) {
+			Config.prev_question = "PLANS_TODAY";
+		} else if (Config.prev_question.equals("PLANS_TODAY")) {
 
-			if (text.toLowerCase().contains("and you")) {
+			if (!text.toLowerCase().contains("and youX")) {
 				Tools.speakText(Speech
-						.getRandomString(Speech.HOWS_DAY_REPLY_TYPE));
+						.getRandomString(Speech.PLANS_TODAY_REPLY_TYPE));
 				try {
-					Thread.sleep(1500);
+					Thread.sleep(400);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-			Tools.speakText(Speech.getRandomString(Speech.PLANS_TODAY_TYPE));
-			prev_question = "PLANS_TODAY";
+			Tools.speakText("Did anything interesting happen to you today?");
+			Config.prev_question = "HAPPEN";
 		}
 		else
-			Tools.speakText(Speech.getRandomString("What's up?"));
-
+			if(GUI.shoppingPanel.isVisible() && Config.prev_question.equals("HAPPEN")){
+				Tools.speakText("How are things?");
+				Config.prev_question = "HOW_THINGS";
+				
+			}
 	}
 
 	private static class SpeechToText extends Thread {
@@ -88,7 +92,9 @@ public class ChatterBot {
 					if (result.getHypothesis().length() > 3) {
 						System.out.println("You said: "
 								+ result.getHypothesis());
-						think(result.getHypothesis());
+						
+						if(GUI.isFaceRecognized && GUI.isVoiceRecognized)
+							think(result.getHypothesis());
 					}
 				}
 				recognizer.stopRecognition();

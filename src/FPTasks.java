@@ -96,7 +96,7 @@ public class FPTasks {
 					} else {
 						Thread st = new Thread(new FPTasks.SpeakerTask());
 						st.start();
-						vp.playVideo("video/Untitled.mov", bot_action);
+						vp.playVideo("video/Goodbye!.mov", bot_action);
 
 						System.out.println("NOT PLAYING: video/" + bot_action
 								+ ".mov");
