@@ -53,7 +53,8 @@ public class GUI {
 
 	private static ImageIcon voiceIcon;
 	private static ImageIcon faceIcon;
-
+	private static ImageIcon goodIcon;
+	private static ImageIcon badIcon;
 	// Labels
 	private static JLabel faceRecognitionIconLabel;
 	private static JLabel voiceRecognitionIconLabel;
@@ -62,6 +63,8 @@ public class GUI {
 	private static JLabel transactionLabel;
 	private static JLabel voiceIconLabel;
 	private static JLabel faceIconLabel;
+
+	private static JLabel transactionResultLabel;
 
 	private static double totalPrice = 0.00;
 
@@ -237,6 +240,11 @@ public class GUI {
 		faceIconLabel = new JLabel(faceIcon);
 		faceIconLabel.setBounds(79, 970, 100, 100);
 
+		goodIcon = new ImageIcon(getClass().getResource("/res/good.jpg"));
+		badIcon = new ImageIcon(getClass().getResource("/res/bad.jpg"));
+		transactionResultLabel = new JLabel();
+		transactionResultLabel.setBounds(1034, 526, 458, 437);
+		
 		// Total Shopping Chart
 		totalPriceLabel = new JLabel("Total: 0.00 EUR");
 		totalPriceLabel.setFont(new Font("Arial", Font.PLAIN, 40));
@@ -275,7 +283,7 @@ public class GUI {
 
 		checkoutPanel.add(statusLabel);
 		checkoutPanel.add(transactionLabel);
-
+		checkoutPanel.add(transactionResultLabel);
 		// Adding components to main window
 
 		mainFrame.add(mainPanel);
@@ -529,9 +537,13 @@ public class GUI {
 		checkoutPanel.add(botPanel);
 
 		if (!payment_accepted)
-			statusLabel.setText("Payment Rejected.");
+			{
+				statusLabel.setText("Payment Rejected.");
+				transactionResultLabel.setIcon(badIcon);
+			}
 
 		if (transaction_id != null) {
+			transactionResultLabel.setIcon(goodIcon);
 			transactionLabel.setText("Your Transaction ID: " + transaction_id);
 			transactionLabel.setVisible(true);
 		}
