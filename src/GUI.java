@@ -535,7 +535,8 @@ public class GUI {
 		        new java.util.TimerTask() {
 		            @Override
 		            public void run() {
-		                // your code here
+		            	Tools.speakText(Speech.getRandomString(Speech.GREETINGS_OUTRO_TYPE));
+		            	goToCoverPanel();
 		            }
 		        }, 
 		        10000 

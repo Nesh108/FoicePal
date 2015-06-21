@@ -8,6 +8,11 @@ public class Speech {
 	static protected String[] GREETINGS_INTRO =  
 		{"Hello there!", "Hey there!","Hello!","Hi!"}; 
 	
+	// Greetings when customer has finished
+	static protected String GREETINGS_OUTRO_TYPE = "G_OUTRO";
+	static protected String[] GREETINGS_OUTRO =  
+		{"Goodbye!", "See you soon!","Have a nice day!","Have a great day!"}; 
+	
 	// Voice Training
 	static protected String VOICE_TRAINING_TYPE = "V_TRAIN";
 	static protected String[] VOICE_TRAINING =
@@ -25,9 +30,10 @@ public class Speech {
 		Random r = new Random();
 		
 		if(type.equals(GREETINGS_INTRO_TYPE))
-		{
 			return GREETINGS_INTRO[r.nextInt(GREETINGS_INTRO.length)];
-		}
+		
+		if(type.equals(GREETINGS_OUTRO_TYPE))
+			return GREETINGS_OUTRO[r.nextInt(GREETINGS_OUTRO.length)];
 		
 		// Not a recognized type
 		else return "";
