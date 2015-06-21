@@ -29,7 +29,7 @@ public class GUI {
 	private static JPanel mainPanel;
 	protected static mVideoImage botPanel;
 	private static JPanel coverPanel;
-	private static JPanel shoppingPanel;
+	public static JPanel shoppingPanel;
 	private static JPanel checkoutPanel;
 
 	// Buttons
@@ -69,8 +69,8 @@ public class GUI {
 	private static double totalPrice = 0.00;
 
 	// TODO: implement voice
-	private static boolean isVoiceRecognized = false;
-	private static boolean isFaceRecognized = false;
+	public static boolean isVoiceRecognized = false;
+	public static boolean isFaceRecognized = false;
 
 	private static String customer_data = null;
 	private static String customer_name = null;
@@ -229,7 +229,6 @@ public class GUI {
 		greenIcon = new ImageIcon(getClass().getResource("/res/green_icon.png"));
 
 		voiceRecognitionIconLabel = new JLabel(yellowIcon);
-		voiceRecognitionIconLabel.setBounds(166, 1070, 100, 100);
 		faceRecognitionIconLabel = new JButton(yellowIcon);
 		faceRecognitionIconLabel.setBorderPainted( false );
 		faceRecognitionIconLabel.addActionListener(new ActionListener() {
@@ -241,15 +240,17 @@ public class GUI {
 			}
 
 		});
-		faceRecognitionIconLabel.setBounds(79, 1070, 100, 100);
+
+		voiceRecognitionIconLabel.setBounds(166, 970, 100, 100);
+		faceRecognitionIconLabel.setBounds(79, 970, 100, 100);
 
 		voiceIcon = new ImageIcon(getClass().getResource("/res/voice_icon.png"));
 		faceIcon = new ImageIcon(getClass().getResource("/res/face_icon.png"));
 		voiceIconLabel = new JLabel(voiceIcon);
-		voiceIconLabel.setBounds(166, 970, 100, 100);
+		voiceIconLabel.setBounds(166, 890, 100, 100);
 
 		faceIconLabel = new JLabel(faceIcon);
-		faceIconLabel.setBounds(79, 970, 100, 100);
+		faceIconLabel.setBounds(79, 890, 100, 100);
 
 		goodIcon = new ImageIcon(getClass().getResource("/res/good.jpg"));
 		badIcon = new ImageIcon(getClass().getResource("/res/bad.jpg"));
@@ -452,6 +453,7 @@ public class GUI {
 		}
 
 		isVoiceRecognized = true;
+		Tools.speak("I recognize your voice!");
 		voiceRecognitionIconLabel.setIcon(greenIcon);
 
 		if (isFaceRecognized)
@@ -482,7 +484,7 @@ public class GUI {
 		GUI.customer_name = customer_name;
 
 		isFaceRecognized = true;
-
+		Tools.speak("I recognize your face!");
 		faceRecognitionIconLabel.setIcon(greenIcon);
 
 		if (isVoiceRecognized)
@@ -537,6 +539,9 @@ public class GUI {
 			ScannerTask = new Thread(new FPTasks.ProductScannerTask());
 			ScannerTask.start();
 			shoppingPanel.add(botPanel);
+
+			Tools.speak("So, how are you today?");
+			Config.prev_question = "HOW_ARE_YOU";
 		} else
 			mainPanel.add(botPanel);
 	}
@@ -551,12 +556,16 @@ public class GUI {
 			{
 				statusLabel.setText("Payment Rejected.");
 				transactionResultLabel.setIcon(badIcon);
+
+				Tools.speak("There was a problem with your payment");
 			}
 
 		if (transaction_id != null) {
 			transactionResultLabel.setIcon(goodIcon);
 			transactionLabel.setText("Your Transaction ID: " + transaction_id);
 			transactionLabel.setVisible(true);
+
+			Tools.speak("Great! Payment completed!");
 		}
 
 		new java.util.Timer().schedule(new java.util.TimerTask() {

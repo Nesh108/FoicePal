@@ -9,7 +9,10 @@ public class Config {
 	static public boolean runScanner = false;
 	static public boolean runBot = false;
 	
+
+	static public String prev_question = "";
+	
 	// Final Dimensions
 	static public int WIDTH = 1920;
-	static public int HEIGTH = 1200;
+	static public int HEIGTH = 1080;
 }
