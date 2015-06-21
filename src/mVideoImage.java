@@ -33,7 +33,7 @@ public class mVideoImage extends JPanel {
 
         @Override
         public Dimension getPreferredSize() {
-            return mImage == null ? new Dimension(597, 604) : new Dimension(mImage.getWidth(), mImage.getHeight());
+            return mImage == null ? new Dimension(613, 806) : new Dimension(mImage.getWidth(), mImage.getHeight());
         }
 
         private class ImageRunnable implements Runnable {

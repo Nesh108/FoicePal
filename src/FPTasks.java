@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -86,12 +87,38 @@ public class FPTasks {
 			
 			while(Config.runBot)
 			{
-				if(bot_action.equals("Test"))
+				if(!bot_action.equals(""))
 					{
-						vp.playVideo("video/Untitled.mov");
+						if((new File("video/" + bot_action + ".mov")).exists())
+							{
+								Thread st = new Thread(new FPTasks.SpeakerTask());	
+								st.start();
+								vp.playVideo("video/" + bot_action + ".mov", bot_action);
+							}
+						else
+							{
+								Thread st = new Thread(new FPTasks.SpeakerTask());	
+								st.start();
+								vp.playVideo("video/Untitled.mov", bot_action);
+								
+								System.out.println("NOT PLAYING: video/" + bot_action + ".mov");
+							}
+						
 						bot_action = "";
 					}
 			}
+		}
+	}
+	
+	protected static class SpeakerTask implements Runnable {
+		public void run() {
+			try {
+				Thread.sleep(1200);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Tools.speakText(bot_action);
 		}
 	}
 	

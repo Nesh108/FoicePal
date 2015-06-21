@@ -53,7 +53,8 @@ public class MotionDetector implements WebcamMotionListener {
 			LOCK.notifyAll();
 		}
 		GUI.toggleCoverPanel();
-		Tools.speakText(Speech.getRandomString(Speech.GREETINGS_INTRO_TYPE));
+		Tools.speak(Speech.getRandomString(Speech.GREETINGS_INTRO_TYPE));
+				
 		
 
 		SRTask.start();

@@ -53,6 +53,11 @@ public class Tools {
 		}
 	}
 	
+	protected static void speak(String text){
+		System.out.println("saying " + text);
+		FPTasks.bot_action = text;
+	}
+	
 	protected static void speakText(String text)
     {
 		try{
@@ -70,7 +75,7 @@ public class Tools {
 	        Player player = new Player(fileInputStream);
 	        player.play();
 	        player.close();
-	  //      file.delete();
+	        file.delete();
 		}
 		catch(Exception e)
 		{

@@ -409,8 +409,6 @@ public class GUI {
 			BotTask = new Thread(new FPTasks.BotControllerTask());
 			BotTask.start();
 
-			FPTasks.bot_action = "Test";
-
 		}
 	}
 
@@ -510,7 +508,7 @@ public class GUI {
 
 		if (!isFPCustomer) {
 			isFPCustomer = true;
-			Tools.speakText("Hey: " + customer_name.split(" ")[0]
+			Tools.speak("Hey: " + customer_name.split(" ")[0]
 					+ ". Welcome back!");
 		}
 	}
@@ -551,7 +549,7 @@ public class GUI {
 		new java.util.Timer().schedule(new java.util.TimerTask() {
 			@Override
 			public void run() {
-				Tools.speakText(Speech
+				Tools.speak(Speech
 						.getRandomString(Speech.GREETINGS_OUTRO_TYPE));
 				goToCoverPanel();
 			}

@@ -59,7 +59,7 @@ public class VideoPlayer
    
   }
 
-  protected void playVideo(String filename){
+  protected void playVideo(String filename, String text){
 
 	    // Let's make sure that we can actually convert video pixel formats.
 	    if (!IVideoResampler.isSupported(
@@ -237,6 +237,7 @@ public class VideoPlayer
 	            updateJavaWindow(javaImage, mScreen);
 	          }
 	        }
+
 	      }
 	      else
 	      {
