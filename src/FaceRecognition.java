@@ -24,7 +24,7 @@ public class FaceRecognition {
 	private String test_group = "People_Test1";
 	private String main_group = "People";
 	
-	private int PHOTOS_PER_SET = 20;
+	private int PHOTOS_PER_SET = 30;
 	private int ATTEMPTS = 10;
 	
 	private String[] customer_data;	// {<name surname>, <email,phone>}
@@ -37,7 +37,7 @@ public class FaceRecognition {
 		while(!isTrained){
 			try{
 				if(Config.DEBUG)
-					trainDetector(test_group);
+					trainDetector(main_group);
 				else
 					trainDetector(main_group);
 				
@@ -45,19 +45,20 @@ public class FaceRecognition {
 			}
 			catch(Exception e)
 			{
+				e.printStackTrace();
 			}
 		}
 		
 		while(!person_found && ATTEMPTS > 0  && Config.runRecognition){
 			try{
 				if(Config.DEBUG)
-					customer_data = detectPerson(ImageFetcher.fetchImage(),test_group);
+					customer_data = detectPerson(ImageFetcher.fetchImage(),main_group);
 				else
 					customer_data = detectPerson(ImageFetcher.fetchImage(),main_group);
 			
 			}
 			catch(Exception e){
-				
+				e.printStackTrace();
 			}
 
 			ATTEMPTS--;
@@ -97,7 +98,7 @@ public class FaceRecognition {
 				
 				ImageFetcher.openCamera();
 				
-				createPersonSet("Hasan Dude", "h_email[at]gmail.com,+49123456789", test_group);
+				createPersonSet("Alberto V.", "alberto[at]gmail.com-[p]4915733430313", main_group);
 				
 				ImageFetcher.closeCamera();
 				System.exit(0);
@@ -124,7 +125,7 @@ public class FaceRecognition {
 				}
 				catch(Exception e)
 				{
-					
+					e.printStackTrace();
 				}
 				
 			}

@@ -1,6 +1,7 @@
 import java.io.IOException;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.JPanel;
 
 import org.json.JSONException;
 
@@ -21,7 +22,7 @@ public class FPTasks {
 	     public void run() {
 	    	 System.out.println("Started SpeakerRecognition");
 	         try {
-				new SpeakerRecognition();
+				new SpeakerRecognition();				
 			} catch (UnsupportedAudioFileException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -74,6 +75,24 @@ public class FPTasks {
 	    	 System.out.println("Started Product Scanner");
 	    	 new ProductScanner();
 	     }
+	}
+	
+	public static String bot_action = "";
+	protected static class BotControllerTask implements Runnable {
+		public void run() {
+
+	    	 System.out.println("Started Video");
+			VideoPlayer vp = new VideoPlayer(GUI.botPanel);
+			
+			while(Config.runBot)
+			{
+				if(bot_action.equals("Test"))
+					{
+						vp.playVideo("video/Untitled.mov");
+						bot_action = "";
+					}
+			}
+		}
 	}
 	
 }

@@ -38,16 +38,34 @@ public class SpeakerRecognition {
 		
 		while(isTraining && Config.runRecognition){
 			
-//			System.out.println("READ THE FOLLOWING OUT LOUD WHEN RECORDING STARTS.");
-//			Thread.sleep(2000);
-//			for(int i = 0; i < voiceTrainingSize; i++){
-//				
-//				System.out.println(voiceTrainingList[i]);
-//				
-//				
-//				// TODO
-//				// Record every recording one by one, name them "ID"+id+
-//			}
+			System.out.println("READ THE FOLLOWING OUT LOUD WHEN RECORDING STARTS.");
+			Thread.sleep(2000);
+			for(int i = 0; i < voiceTrainingSize; i++){
+				
+				System.out.println(voiceTrainingList[i]);
+				Thread.sleep(2000);
+
+				outputFile = new File("audio/hasan" + i + ".wav");
+
+				recorder.setOutputFile(outputFile);
+				
+				Thread stopper = new Thread(new Runnable() {
+					public void run() {
+						try {
+							Thread.sleep(8000);
+						}catch (InterruptedException ex) {
+							ex.printStackTrace();
+						}
+						recorder.finish();
+					}
+				});
+
+				stopper.start();
+
+				// start recording
+				recorder.start();
+				
+			}
 			
 			
 		}
@@ -74,7 +92,7 @@ public class SpeakerRecognition {
 		Thread stopper = new Thread(new Runnable() {
 			public void run() {
 				try {
-					Thread.sleep(8000);
+					Thread.sleep(6000);
 				}catch (InterruptedException ex) {
 					ex.printStackTrace();
 				}

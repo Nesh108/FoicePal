@@ -26,6 +26,10 @@ public class Tools {
 		return tag.replace("[at]", "@");
 	}
 	
+	protected static String convertTagIntoPhone(String tag) {
+		return tag.replace("[p]", "+");
+	}
+	
 	protected static byte[] getByteFromBufferedImage(BufferedImage img) throws IOException{
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ImageIO.write( img, "jpg", baos );

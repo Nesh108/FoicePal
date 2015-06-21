@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -28,7 +27,7 @@ public class GUI {
 
 	// Panels
 	private static JPanel mainPanel;
-	private static JPanel botPanel;
+	protected static mVideoImage botPanel;
 	private static JPanel coverPanel;
 	private static JPanel shoppingPanel;
 	private static JPanel checkoutPanel;
@@ -51,6 +50,9 @@ public class GUI {
 	private static ImageIcon redIcon;
 	private static ImageIcon yellowIcon;
 	private static ImageIcon greenIcon;
+	
+	private static ImageIcon voiceIcon;
+	private static ImageIcon faceIcon;
 
 	// Labels
 	private static JLabel faceRecognitionIconLabel;
@@ -58,6 +60,8 @@ public class GUI {
 	private static JLabel totalPriceLabel;
 	private static JLabel statusLabel;
 	private static JLabel transactionLabel;
+	private static JLabel voiceIconLabel;
+	private static JLabel faceIconLabel;
 
 	private static double totalPrice = 0.00;
 
@@ -77,6 +81,7 @@ public class GUI {
 			new FPTasks.MotionRecognitionTask());
 	private static Thread PayTask;
 	private static Thread ScannerTask;
+	private static Thread BotTask;
 
 	private static ArrayList<Object[]> shoppingChart = new ArrayList<Object[]>();
 	private static ArrayList<Object[]> productsList;
@@ -107,11 +112,9 @@ public class GUI {
 		coverPanel.setLayout(null);
 
 		// Bot Panel
-		botPanel = new JPanel();
+		botPanel = new mVideoImage();
 		botPanel.setBounds(82, 91, 597, 604);
-		botPanel.setBackground(Color.BLACK);
 		botPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1, true));
-		botPanel.setLayout(null);
 
 		// Shopping Panel
 		shoppingPanel = new JPanel();
@@ -225,6 +228,15 @@ public class GUI {
 		faceRecognitionIconLabel = new JLabel(yellowIcon);
 		faceRecognitionIconLabel.setBounds(79, 1070, 100, 100);
 
+		voiceIcon = new ImageIcon(getClass().getResource("/res/voice_icon.png"));
+		faceIcon = new ImageIcon(getClass().getResource(
+				"/res/face_icon.png"));
+		voiceIconLabel = new JLabel(voiceIcon);
+		voiceIconLabel.setBounds(166, 970, 100, 100);
+
+		faceIconLabel = new JLabel(faceIcon);
+		faceIconLabel.setBounds(79, 970, 100, 100);
+		
 		// Total Shopping Chart
 		totalPriceLabel = new JLabel("Total: 0.00 EUR");
 		totalPriceLabel.setFont(new Font("Arial", Font.PLAIN, 40));
@@ -248,6 +260,8 @@ public class GUI {
 		mainPanel.add(fpCustomerButton);
 		mainPanel.add(voiceRecognitionIconLabel);
 		mainPanel.add(faceRecognitionIconLabel);
+		mainPanel.add(faceIconLabel);
+		mainPanel.add(voiceIconLabel);
 
 		// Adding components to shopping panel
 
@@ -381,6 +395,16 @@ public class GUI {
 	protected static void toggleCoverPanel() {
 		coverPanel.setVisible(!coverPanel.isVisible());
 		mainPanel.setVisible(!mainPanel.isVisible());
+		
+		if(mainPanel.isVisible())
+			{
+				Config.runBot = true;
+				BotTask = new Thread(new FPTasks.BotControllerTask());
+				BotTask.start();
+				
+				FPTasks.bot_action = "Test";
+				
+			}
 	}
 
 	protected static void showFPCustomerButton(boolean b) {
@@ -521,6 +545,8 @@ public class GUI {
 	protected static void goToCoverPanel(){
 		transactionLabel.setVisible(false);
 		mainPanel.add(botPanel);
+		
+		Config.runBot = false;
 		
 		checkoutPanel.setVisible(false);
 		clearGUI(true);
