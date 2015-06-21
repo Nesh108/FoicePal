@@ -113,7 +113,7 @@ public class GUI {
 
 		// Bot Panel
 		botPanel = new mVideoImage();
-		botPanel.setBounds(82, 91, 597, 604);
+		botPanel.setBounds(66, 91, 613, 806);
 		botPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1, true));
 
 		// Shopping Panel
@@ -162,7 +162,7 @@ public class GUI {
 
 		// Back to Main menu
 		backToMainPanelButton = new JButton("Back");
-		backToMainPanelButton.setBounds(66, 993, 389, 93);
+		backToMainPanelButton.setBounds(66, 983, 389, 93);
 		backToMainPanelButton.setFont(new Font("Arial", Font.PLAIN, 40));
 		backToMainPanelButton.addActionListener(new ActionListener() {
 
@@ -194,7 +194,7 @@ public class GUI {
 
 		// Checkout with FoicePal
 		FPcheckoutButton = new JButton("FoicePal Checkout");
-		FPcheckoutButton.setBounds(1467, 1086, 389, 93);
+		FPcheckoutButton.setBounds(1040, 983, 389, 93);
 		// FPcheckoutButton.setBounds(100, 208,389, 93);
 		FPcheckoutButton.setFont(new Font("Arial", Font.PLAIN, 40));
 		FPcheckoutButton.setVisible(false);
@@ -204,6 +204,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				if (isFPCustomer) {
 					Config.runScanner = false;
+					totalPriceLabel.setText("Processing...");
 					PayTask = new Thread(new FPTasks.PaymentTask());
 					PayTask.start();
 				} else if (Config.DEBUG)
@@ -239,7 +240,7 @@ public class GUI {
 		// Total Shopping Chart
 		totalPriceLabel = new JLabel("Total: 0.00 EUR");
 		totalPriceLabel.setFont(new Font("Arial", Font.PLAIN, 40));
-		totalPriceLabel.setBounds(944, 993, 453, 74);
+		totalPriceLabel.setBounds(496, 993, 453, 74);
 		// totalPriceLabel.setBounds(94, 99, 453, 74);
 
 		// Total Shopping Chart
