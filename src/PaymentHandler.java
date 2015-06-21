@@ -17,7 +17,7 @@ public class PaymentHandler {
 	public PaymentHandler() {
 	}
 
-	public boolean sendPayment(String customer_name, String customer_data,
+	public String sendPayment(String customer_name, String customer_data,
 			ArrayList<Object[]> prod_data) {
 
 		String c_first_name;
@@ -89,16 +89,16 @@ public class PaymentHandler {
 				}
 			} else {
 				System.out.println("Error!");
-				return false;
+				return null;
 			}
 
 		} catch (JSONException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
+			return null;
 		}
 
-		return true;
+		return "1223434343";
 
 	}
 

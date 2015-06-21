@@ -60,10 +60,11 @@ public class FPTasks {
 	     public void run() {
 	         // do stuff here
 	    	 System.out.println("Started Payment");
-	    	 if(new PaymentHandler().sendPayment(GUI.getCustomerName(),GUI.getCustomerData(), GUI.getShoppingChart()))
-	    		 System.out.println("Payment received!");
+	    	 String transaction_id;
+	    	 if((transaction_id = new PaymentHandler().sendPayment(GUI.getCustomerName(),GUI.getCustomerData(), GUI.getShoppingChart())) != null)
+	    		 GUI.goToCheckoutPanel(true, transaction_id);
 	    	 else
-	    		 System.out.println("Payment rejected :(!");
+	    		 GUI.goToCheckoutPanel(false, null);
 	     }
 	}
 	
