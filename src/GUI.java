@@ -462,13 +462,9 @@ public class GUI {
 		Config.runRecognition = true;
 
 		if (!goToCover) {
-			SRTask.interrupt();
 			SRTask = new Thread(new FPTasks.SpeakerRecognitionTask());
-
-			FRTask.interrupt();
 			FRTask = new Thread(new FPTasks.FaceRecognitionTask());
 		} else {
-			MTask.interrupt();
 			MTask = new Thread(new FPTasks.MotionRecognitionTask());
 		}
 	}
@@ -506,6 +502,27 @@ public class GUI {
 			transactionLabel.setText("Your Transaction ID: " + transaction_id);
 			transactionLabel.setVisible(true);
 		}
+		
+		new java.util.Timer().schedule( 
+		        new java.util.TimerTask() {
+		            @Override
+		            public void run() {
+		                // your code here
+		            }
+		        }, 
+		        10000 
+		);
+	}
+	
+	protected static void goToCoverPanel(){
+		transactionLabel.setVisible(false);
+		mainPanel.add(botPanel);
+		
+		checkoutPanel.setVisible(false);
+		clearGUI(true);
+		
+		// Restarting the motion detector
+		MTask.start();
 	}
 
 	protected static String getCustomerName() {
