@@ -19,8 +19,7 @@ public class SpeakerRecognition {
 	private int numberOfSamples; 
 	private SoundRecorder recorder = new SoundRecorder();
 	
-	boolean isTraining = true;
-	
+	boolean isTraining = false;
 	
 	String[] voiceTrainingList = Speech.VOICE_TRAINING;
 	int voiceTrainingSize = voiceTrainingList.length;
@@ -45,8 +44,22 @@ public class SpeakerRecognition {
 				System.out.println(voiceTrainingList[i]);
 				Thread.sleep(2000);
 
-				outputFile = new File("audio/hasan" + i + ".wav");
-
+				boolean fileCreated = false;
+				
+				int counter = i;
+				while(!fileCreated){
+					if(!new File("audio/hasan[at]gmail.com-[p]491573234303456;" + counter + ".wav").exists())
+						{
+							outputFile = new File("audio/hasan[at]gmail.com-[p]491573234303456;" + counter + ".wav");
+							fileCreated = true;
+							
+							System.out.println("Creating: " + "audio/hasan[at]gmail.com-[p]491573234303456;" + counter + ".wav");
+						}
+					else
+						counter++;
+					
+				}
+				
 				recorder.setOutputFile(outputFile);
 				
 				Thread stopper = new Thread(new Runnable() {
@@ -63,10 +76,8 @@ public class SpeakerRecognition {
 				stopper.start();
 
 				// start recording
-				recorder.start();
-				
+				recorder.start();	
 			}
-			
 			
 		}
 		
@@ -83,9 +94,7 @@ public class SpeakerRecognition {
 
 		this.outputFileName ="audio/" + "audioSample" + numberOfSamples + ".wav";
 	
-		outputFile = new File(outputFileName);
-		
-		
+		outputFile = new File(outputFileName);	
 		
 		recorder.setOutputFile(outputFile);
 		
@@ -100,17 +109,36 @@ public class SpeakerRecognition {
 			}
 		});
 
+		if(!Config.runRecognition)
+		{
+			if(Config.DEBUG)
+				System.out.println("Voice recognition stopped by the user");
+			return;
+		}
+		
 		stopper.start();
 
 		// start recording
 		recorder.start();
 		
-		
+		if(!Config.runRecognition)
+		{
+			if(Config.DEBUG)
+				System.out.println("Voice recognition stopped by the user");
+			return;
+		}
 		
 		List<MatchResult<String>> matches = recognito.identify(outputFile);
 		System.out.println("Checking file name: " + outputFileName);
 		int i = 0;
 		MatchResult<String> match = matches.get(i);
+		
+		if(!Config.runRecognition)
+		{
+			if(Config.DEBUG)
+				System.out.println("Voice recognition stopped by the user");
+			return;
+		}
 		
 		while(match.getKey().toString().equalsIgnoreCase(outputFileName)){
 			System.out.println("It is same as itself!!!!!");
@@ -119,7 +147,13 @@ public class SpeakerRecognition {
 			}
 		
 		System.out.println("Audio sample count : " + matches.size());
+
 		System.out.println("This is " + match.getKey() + "  " + match.getLikelihoodRatio() + "% positive about it...");
+		
+		
+		GUI.setVoiceRecognized(match.getKey().split(";")[0]);
+		
+		 
 		
 	}
 	
@@ -138,8 +172,11 @@ public class SpeakerRecognition {
 		  if (directoryListing != null) {
 		    for (File child : directoryListing) {
 		    	fileName = child.getName();
-		    	if(fileName.endsWith("wav"))
-		    		this.voicePrints.add(recognito.createVoicePrint(child.getName(), child));
+		    	if(fileName.endsWith("wav") && !fileName.contains("audioSample"))
+		    		{
+		    			System.out.println("Current filename: " + fileName);
+		    			this.voicePrints.add(recognito.createVoicePrint(child.getName(), child));
+		    		}
 		    }
 		  } else {
 		    System.out.println("No such directory.");

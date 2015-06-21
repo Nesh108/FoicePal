@@ -50,7 +50,7 @@ public class GUI {
 	private static ImageIcon redIcon;
 	private static ImageIcon yellowIcon;
 	private static ImageIcon greenIcon;
-	
+
 	private static ImageIcon voiceIcon;
 	private static ImageIcon faceIcon;
 
@@ -185,7 +185,7 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Config.runScanner = false;
-				
+
 				// Accepted by default
 				goToCheckoutPanel(true, null);
 			}
@@ -229,14 +229,13 @@ public class GUI {
 		faceRecognitionIconLabel.setBounds(79, 1070, 100, 100);
 
 		voiceIcon = new ImageIcon(getClass().getResource("/res/voice_icon.png"));
-		faceIcon = new ImageIcon(getClass().getResource(
-				"/res/face_icon.png"));
+		faceIcon = new ImageIcon(getClass().getResource("/res/face_icon.png"));
 		voiceIconLabel = new JLabel(voiceIcon);
 		voiceIconLabel.setBounds(166, 970, 100, 100);
 
 		faceIconLabel = new JLabel(faceIcon);
 		faceIconLabel.setBounds(79, 970, 100, 100);
-		
+
 		// Total Shopping Chart
 		totalPriceLabel = new JLabel("Total: 0.00 EUR");
 		totalPriceLabel.setFont(new Font("Arial", Font.PLAIN, 40));
@@ -395,16 +394,15 @@ public class GUI {
 	protected static void toggleCoverPanel() {
 		coverPanel.setVisible(!coverPanel.isVisible());
 		mainPanel.setVisible(!mainPanel.isVisible());
-		
-		if(mainPanel.isVisible())
-			{
-				Config.runBot = true;
-				BotTask = new Thread(new FPTasks.BotControllerTask());
-				BotTask.start();
-				
-				FPTasks.bot_action = "Test";
-				
-			}
+
+		if (mainPanel.isVisible()) {
+			Config.runBot = true;
+			BotTask = new Thread(new FPTasks.BotControllerTask());
+			BotTask.start();
+
+			FPTasks.bot_action = "Test";
+
+		}
 	}
 
 	protected static void showFPCustomerButton(boolean b) {
@@ -421,8 +419,9 @@ public class GUI {
 		}
 
 		if (GUI.customer_data == null)
-			GUI.customer_data = customer_email;
-		else if (!GUI.customer_data.equals(customer_email)) {
+			GUI.customer_data = Tools.convertTagIntoEmail(customer_email);
+		else if (!GUI.customer_data.equals(Tools
+				.convertTagIntoEmail(customer_email))) {
 			faceRecognitionIconLabel.setIcon(redIcon);
 			voiceRecognitionIconLabel.setIcon(redIcon);
 
@@ -499,8 +498,12 @@ public class GUI {
 
 	private static void customerRecognized() {
 		showFPCustomerButton(true);
-		isFPCustomer = true;
-		Tools.speakText("Hey: " + customer_name + ". Welcome back!");
+
+		if (!isFPCustomer) {
+			isFPCustomer = true;
+			Tools.speakText("Hey: " + customer_name.split(" ")[0]
+					+ ". Welcome back!");
+		}
 	}
 
 	private static void toggleShoppingPanel() {
@@ -517,82 +520,80 @@ public class GUI {
 		} else
 			mainPanel.add(botPanel);
 	}
-	
-	protected static void goToCheckoutPanel(boolean payment_accepted, String transaction_id){
+
+	protected static void goToCheckoutPanel(boolean payment_accepted,
+			String transaction_id) {
 		shoppingPanel.setVisible(false);
 		checkoutPanel.setVisible(true);
-		
-		if(!payment_accepted)
+		checkoutPanel.add(botPanel);
+
+		if (!payment_accepted)
 			statusLabel.setText("Payment Rejected.");
-		
-		if(transaction_id != null)
-		{
+
+		if (transaction_id != null) {
 			transactionLabel.setText("Your Transaction ID: " + transaction_id);
 			transactionLabel.setVisible(true);
 		}
-		
-		new java.util.Timer().schedule( 
-		        new java.util.TimerTask() {
-		            @Override
-		            public void run() {
-		            	Tools.speakText(Speech.getRandomString(Speech.GREETINGS_OUTRO_TYPE));
-		            	goToCoverPanel();
-		            }
-		        }, 
-		        10000 
-		);
+
+		new java.util.Timer().schedule(new java.util.TimerTask() {
+			@Override
+			public void run() {
+				Tools.speakText(Speech
+						.getRandomString(Speech.GREETINGS_OUTRO_TYPE));
+				goToCoverPanel();
+			}
+		}, 10000);
 	}
-	
-	protected static void goToCoverPanel(){
+
+	protected static void goToCoverPanel() {
 		transactionLabel.setVisible(false);
 		mainPanel.add(botPanel);
-		
+
 		Config.runBot = false;
-		
+
 		checkoutPanel.setVisible(false);
 		clearGUI(true);
-		
+
 		// Restarting the motion detector
 		MTask.start();
 	}
 
 	protected static String getCustomerName() {
-		// return customer_name;
+		return customer_name;
 
-		return "Andrey Boss";
 	}
 
 	protected static String getCustomerData() {
-		// return customer_data;
+		return customer_data;
 
-		return "email@gmail.cum,23932932932";
 	}
 
 	protected static ArrayList<Object[]> getShoppingChart() {
 		return shoppingChart;
 	}
-	
+
 	class ImagePanel extends JPanel {
 
-		  private Image img;
+		private Image img;
 
-		  public ImagePanel(String img) {
-		    this(new ImageIcon(img).getImage());
-		  }
-
-		  public ImagePanel(Image img) {
-		    this.img = img;
-		    Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
-		    setPreferredSize(size);
-		    setMinimumSize(size);
-		    setMaximumSize(size);
-		    setSize(size);
-		    setLayout(null);
-		  }
-
-		  public void paintComponent(Graphics g) {
-		    g.drawImage(img, 0, 0, null);
-		  }
-
+		public ImagePanel(String img) {
+			this(new ImageIcon(img).getImage());
 		}
+
+		public ImagePanel(Image img) {
+			this.img = img;
+			Dimension size = new Dimension(img.getWidth(null),
+					img.getHeight(null));
+			setPreferredSize(size);
+			setMinimumSize(size);
+			setMaximumSize(size);
+			setSize(size);
+			setLayout(null);
+		}
+
+		public void paintComponent(Graphics g) {
+			g.drawImage(img, 0, 0, null);
+		}
+
+	}
 }

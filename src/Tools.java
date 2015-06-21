@@ -58,7 +58,8 @@ public class Tools {
 		try{
 			
 			// Generate speech
-	        File file = new File("toSpeech.mp3");
+	        //File file = new File("toSpeech.mp3");
+			File file = new File(text + ".mp3");
 	        String sentence = URLEncoder.encode(text, "UTF-8");
 	        String urlString = MessageFormat.format(BASE_URL, sentence, Language.ENGLISH);
 	        BinaryResource binaryResource = new Resty().bytes(new URI(urlString));
@@ -69,7 +70,7 @@ public class Tools {
 	        Player player = new Player(fileInputStream);
 	        player.play();
 	        player.close();
-	        file.delete();
+	  //      file.delete();
 		}
 		catch(Exception e)
 		{
