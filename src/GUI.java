@@ -85,6 +85,7 @@ public class GUI {
 	private static Thread PayTask;
 	private static Thread ScannerTask;
 	private static Thread BotTask;
+	private static Thread ChatterBotTask;
 
 	private static ArrayList<Object[]> shoppingChart = new ArrayList<Object[]>();
 	private static ArrayList<Object[]> productsList;
@@ -408,6 +409,8 @@ public class GUI {
 			Config.runBot = true;
 			BotTask = new Thread(new FPTasks.BotControllerTask());
 			BotTask.start();
+			ChatterBotTask = new Thread(new FPTasks.ChatterBotTask());
+			ChatterBotTask.start();
 
 		}
 	}
