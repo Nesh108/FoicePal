@@ -49,17 +49,17 @@ public class PaymentHandler {
 		}
 
 		// First part of JSON
-		String json = "{'customer':{'first_name':'" + c_first_name
-				+ "','last_name':'" + c_last_name + "','email':'" + c_email
-				+ "'," + "'phone':'" + c_phone_num + "'}," + "'items':[";
+		String json = "{\"customer\":{\"first_name\":\"" + c_first_name
+				+ "\",\"last_name\":\"" + c_last_name + "\",\"email\":\"" + c_email
+				+ "\"," + "\"phone\":\"" + c_phone_num + "\"}," + "\"items\":[";
 
 		for (int i = 0; i < prod_data.size(); i++) {
 			if (i != 0)
 				json += ",";
 
-			json += "{'title':'" + prod_data.get(i)[2] + "','price':'"
-					+ prod_data.get(i)[3] + "','currency':'"
-					+ prod_data.get(i)[4] + "'}";
+			json += "{\"title\":\"" + prod_data.get(i)[2] + "\",\"price\":\""
+					+ prod_data.get(i)[3] + "\",\"currency\":\""
+					+ prod_data.get(i)[4] + "\"}";
 
 		}
 		json += "]}";
@@ -77,7 +77,7 @@ public class PaymentHandler {
 				System.out.println("Got: " + object.getString("token"));
 
 				// Payment sent
-				json = "{'token':'" + object.getString("token") + "'}";
+				json = "{\"token\":\"" + object.getString("token") + "\"}";
 				boolean isPaid = false;
 				while (!isPaid) {
 					response = new JSONObject(executePost(STATUS_URL, json));

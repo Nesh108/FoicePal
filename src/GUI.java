@@ -66,7 +66,7 @@ public class GUI {
 	private static double totalPrice = 0.00;
 
 	// TODO: implement voice
-	private static boolean isVoiceRecognized = true;
+	private static boolean isVoiceRecognized = false;
 	private static boolean isFaceRecognized = false;
 
 	private static String customer_data = null;
