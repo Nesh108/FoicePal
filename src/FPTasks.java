@@ -93,7 +93,13 @@ public class FPTasks {
 						Thread st = new Thread(new FPTasks.SpeakerTask());
 						st.start();
 						vp.playVideo("video/" + bot_action + ".mov", bot_action);
-					} else {
+					} else if(bot_action.equals("So, how are you today?.mov")){
+
+						Thread st = new Thread(new FPTasks.SpeakerTask());
+						st.start();
+						vp.playVideo("video/How are you?.mov", bot_action);
+					}
+					else{
 						Thread st = new Thread(new FPTasks.SpeakerTask());
 						st.start();
 						vp.playVideo("video/Goodbye!.mov", bot_action);

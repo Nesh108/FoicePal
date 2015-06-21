@@ -8,11 +8,14 @@ public class ChatterBot {
 
 	public ChatterBot() throws IOException {
 		try {
-			SpeechToText speechToText = new SpeechToText();
-			speechToText.start();
+			
 			
 
 			Tools.speak("Tell me something while I try to recognize you.");
+			
+			Thread.sleep(5000);
+			SpeechToText speechToText = new SpeechToText();
+			speechToText.start();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -26,7 +29,7 @@ public class ChatterBot {
 			if (!text.toLowerCase().contains("and youX")) {
 				Tools.speakText(Speech.getRandomString(Speech.HOW_ARE_YOU_REPLY_TYPE));
 				try {
-					Thread.sleep(4000);
+					Thread.sleep(2000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -40,7 +43,7 @@ public class ChatterBot {
 				Tools.speakText(Speech
 						.getRandomString(Speech.HOWS_DAY_REPLY_TYPE));
 				try {
-					Thread.sleep(400);
+					Thread.sleep(3000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -54,7 +57,7 @@ public class ChatterBot {
 				Tools.speakText(Speech
 						.getRandomString(Speech.PLANS_TODAY_REPLY_TYPE));
 				try {
-					Thread.sleep(400);
+					Thread.sleep(4000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -95,6 +98,8 @@ public class ChatterBot {
 						
 						if(GUI.isFaceRecognized && GUI.isVoiceRecognized)
 							think(result.getHypothesis());
+						
+						Thread.sleep(1000);
 					}
 				}
 				recognizer.stopRecognition();
