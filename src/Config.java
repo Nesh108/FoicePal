@@ -7,6 +7,7 @@ public class Config {
 	
 	static public boolean runRecognition = true;
 	static public boolean runScanner = false;
+	static public boolean runBot = false;
 	
 	// Final Dimensions
 	static public int WIDTH = 1920;

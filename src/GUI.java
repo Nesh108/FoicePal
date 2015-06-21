@@ -27,7 +27,7 @@ public class GUI {
 
 	// Panels
 	private static JPanel mainPanel;
-	private static JPanel botPanel;
+	protected static mVideoImage botPanel;
 	private static JPanel coverPanel;
 	private static JPanel shoppingPanel;
 	private static JPanel checkoutPanel;
@@ -81,6 +81,7 @@ public class GUI {
 			new FPTasks.MotionRecognitionTask());
 	private static Thread PayTask;
 	private static Thread ScannerTask;
+	private static Thread BotTask;
 
 	private static ArrayList<Object[]> shoppingChart = new ArrayList<Object[]>();
 	private static ArrayList<Object[]> productsList;
@@ -111,11 +112,9 @@ public class GUI {
 		coverPanel.setLayout(null);
 
 		// Bot Panel
-		botPanel = new JPanel();
+		botPanel = new mVideoImage();
 		botPanel.setBounds(82, 91, 597, 604);
-		botPanel.setBackground(Color.BLACK);
 		botPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1, true));
-		botPanel.setLayout(null);
 
 		// Shopping Panel
 		shoppingPanel = new JPanel();
@@ -396,6 +395,16 @@ public class GUI {
 	protected static void toggleCoverPanel() {
 		coverPanel.setVisible(!coverPanel.isVisible());
 		mainPanel.setVisible(!mainPanel.isVisible());
+		
+		if(mainPanel.isVisible())
+			{
+				Config.runBot = true;
+				BotTask = new Thread(new FPTasks.BotControllerTask());
+				BotTask.start();
+				
+				FPTasks.bot_action = "Test";
+				
+			}
 	}
 
 	protected static void showFPCustomerButton(boolean b) {
@@ -536,6 +545,8 @@ public class GUI {
 	protected static void goToCoverPanel(){
 		transactionLabel.setVisible(false);
 		mainPanel.add(botPanel);
+		
+		Config.runBot = false;
 		
 		checkoutPanel.setVisible(false);
 		clearGUI(true);
