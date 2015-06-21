@@ -67,8 +67,10 @@ public class PaymentHandler {
 
 		String response_json = executePost(PAYMENT_URL, json);
 		System.out.println("Got: " + response_json);
-
+		
+		
 		try {
+			JSONObject response = null;
 			JSONObject object = new JSONObject(response_json);
 
 			if (object.getInt("_status") == 200) {
@@ -76,10 +78,9 @@ public class PaymentHandler {
 
 				// Payment sent
 				json = "{'token':'" + object.getString("token") + "'}";
-
 				boolean isPaid = false;
 				while (!isPaid) {
-					JSONObject response = new JSONObject(executePost(STATUS_URL, json));
+					response = new JSONObject(executePost(STATUS_URL, json));
 					System.out.println("Payment response" + response.toString());
 					
 					if(response.getString("status").equals("paid"))
@@ -92,13 +93,14 @@ public class PaymentHandler {
 				return null;
 			}
 
+			return response.getString("transaction_id");
+
 		} catch (JSONException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
 
-		return "1223434343";
 
 	}
 

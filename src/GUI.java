@@ -1,9 +1,13 @@
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -97,7 +101,7 @@ public class GUI {
 		mainPanel.setVisible(false);
 
 		// Cover Panel
-		coverPanel = new JPanel();
+		coverPanel = new ImagePanel("res/cover.jpg");
 		coverPanel.setBackground(Color.BLUE);
 		coverPanel.setBounds(0, 0, Config.WIDTH, Config.HEIGTH);
 		coverPanel.setLayout(null);
@@ -305,7 +309,7 @@ public class GUI {
 		productTable.getTableHeader()
 				.setFont(new Font("Arial", Font.PLAIN, 35));
 		productTable.setRowHeight(200);
-		productTable.getColumnModel().getColumn(0).setPreferredWidth(210);
+		productTable.getColumnModel().getColumn(0).setPreferredWidth(240);
 		productTable.getColumnModel().getColumn(1).setPreferredWidth(240);
 		productTable.getColumnModel().getColumn(2).setPreferredWidth(320);
 		productTable.getColumnModel().getColumn(3).setPreferredWidth(140);
@@ -540,4 +544,28 @@ public class GUI {
 	protected static ArrayList<Object[]> getShoppingChart() {
 		return shoppingChart;
 	}
+	
+	class ImagePanel extends JPanel {
+
+		  private Image img;
+
+		  public ImagePanel(String img) {
+		    this(new ImageIcon(img).getImage());
+		  }
+
+		  public ImagePanel(Image img) {
+		    this.img = img;
+		    Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
+		    setPreferredSize(size);
+		    setMinimumSize(size);
+		    setMaximumSize(size);
+		    setSize(size);
+		    setLayout(null);
+		  }
+
+		  public void paintComponent(Graphics g) {
+		    g.drawImage(img, 0, 0, null);
+		  }
+
+		}
 }
