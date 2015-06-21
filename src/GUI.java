@@ -56,7 +56,7 @@ public class GUI {
 	private static ImageIcon goodIcon;
 	private static ImageIcon badIcon;
 	// Labels
-	private static JLabel faceRecognitionIconLabel;
+	private static JButton faceRecognitionIconLabel;
 	private static JLabel voiceRecognitionIconLabel;
 	private static JLabel totalPriceLabel;
 	private static JLabel statusLabel;
@@ -230,7 +230,17 @@ public class GUI {
 
 		voiceRecognitionIconLabel = new JLabel(yellowIcon);
 		voiceRecognitionIconLabel.setBounds(166, 1070, 100, 100);
-		faceRecognitionIconLabel = new JLabel(yellowIcon);
+		faceRecognitionIconLabel = new JButton(yellowIcon);
+		faceRecognitionIconLabel.setBorderPainted( false );
+		faceRecognitionIconLabel.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setFaceRecognized("Alberto V.",
+						"alberto@gmail.com,[p]4915733430313");
+			}
+
+		});
 		faceRecognitionIconLabel.setBounds(79, 1070, 100, 100);
 
 		voiceIcon = new ImageIcon(getClass().getResource("/res/voice_icon.png"));
